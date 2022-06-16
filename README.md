@@ -1,4 +1,4 @@
-# Diep-Clone
+# [Diep-Clone](https://discord.gg/YkEPBYBRu6)
 ## building the client
 ```
 cd build-client
