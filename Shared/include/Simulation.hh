@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 
 namespace shared
@@ -10,5 +12,8 @@ namespace shared
     class Simulation
     {
         std::vector<ecs::Entity *> entities;
+
+    public:
+        Simulation();
     };
 }

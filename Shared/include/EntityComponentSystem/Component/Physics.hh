@@ -9,14 +9,14 @@ namespace shared::ecs
 
 namespace shared::ecs::component
 {
-    class Basic
+    class Physics
     {
         Entity *entity;
 
     public:
         bool updated = false;
-        static constexpr uint8_t ID = 0;
+        static constexpr uint8_t ID = 1;
 
-        Basic(Entity *);
+        Physics(Entity *);
     };
 }
