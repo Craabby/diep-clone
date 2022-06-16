@@ -1,0 +1,14 @@
+#include <vector>
+
+namespace shared
+{
+    namespace ecs
+    {
+        class Entity;
+    }
+
+    class Simulation
+    {
+        std::vector<ecs::Entity *> entities;
+    };
+}

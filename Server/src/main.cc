@@ -1,7 +1,9 @@
 #include <cstdint>
 #include <iostream>
 
+#include <Simulation.hh>
+
 int32_t main()
 {
-    std::cout << "server cout" << std::endl;
+    shared::Simulation simulation;
 }
