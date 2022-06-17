@@ -22,7 +22,7 @@ namespace shared
     {
         uint32_t nextId = 0;
         std::vector<ecs::Entity *> entities;
-        std::array<std::vector<void *>, 2> entityComponentTable;
+        std::array<std::vector<void *>, ecs::component::types::componentCount> entityComponentTable;
 
     public:
         Simulation();
