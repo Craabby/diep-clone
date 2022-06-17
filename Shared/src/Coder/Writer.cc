@@ -36,8 +36,7 @@ namespace shared::coder
 
     Writer &Writer::Float(float value)
     {
-        uint32_t undefinedBehaviourValue = *(uint32_t *)&value;
-        U32(undefinedBehaviourValue);
+        U32(*(uint32_t *)&value);
 
         return *this;
     }
