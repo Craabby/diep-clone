@@ -22,7 +22,7 @@ namespace shared::ecs
     class Entity
     {
         Simulation *simulation;
-        std::array<void *, component::types::componentCount> m_Components;
+        std::array<void *, component::types::COMPONENT_COUNT> m_Components = {nullptr, nullptr};
 
     public:
         uint32_t id;

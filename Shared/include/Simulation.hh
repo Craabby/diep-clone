@@ -2,6 +2,7 @@
 
 #include <array>
 #include <cstdint>
+#include <functional>
 #include <vector>
 
 #include <EntityComponentSystem/Component/Types.hh>
@@ -28,17 +29,17 @@ namespace shared
     {
         uint32_t nextId = 0;
         std::vector<ecs::Entity *> entities;
-        std::array<std::vector<void *>, ecs::component::types::componentCount> entityComponentTable;
+        std::array<std::vector<void *>, ecs::component::types::COMPONENT_COUNT> entityComponentTable;
 
     public:
-        void Tick();
-        void RunGameLoop();
-
         Simulation();
 
         ecs::Entity *CreateEntity();
+        void Tick();
+        void RunGameLoop();
+        uint32_t GetNextId();
 
-        void WriteBinary(coder::Writer &writer);
+        coder::Writer WriteBinary(std::function<bool(ecs::Entity *)> isCreation);
         void FromBinary(coder::Reader &reader);
 
         template <ecs::component::types::component Component>

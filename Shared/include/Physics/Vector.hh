@@ -4,8 +4,8 @@ namespace shared::physics
 {
     class Vector
     {
-        float m_X;
-        float m_Y;
+        float m_X = 0;
+        float m_Y = 0;
 
     public:
         Vector(float, float);

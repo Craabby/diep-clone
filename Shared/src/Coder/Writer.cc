@@ -43,14 +43,14 @@ namespace shared::coder
 
     Writer &Writer::Vu(uint32_t value)
     {
-        while (value)
+        do
         {
             uint32_t byte = value & 255;
             value >>= 7;
             if (value != 0)
                 byte |= 128;
-            U8(value);
-        }
+            U8(byte);
+        } while (value);
 
         return *this;
     }
