@@ -12,6 +12,7 @@ namespace shared
 
     namespace coder
     {
+        class Reader;
         class Writer;
     }
 }
@@ -28,7 +29,8 @@ namespace shared::ecs
         Entity(Simulation *);
         ~Entity();
 
-        void WriteBinary(coder::Writer &, bool);
+        void WriteBinary(coder::Writer &writer, bool isCreation);
+        void FromBinary(coder::Reader &reader, bool isCreation);
 
         template <component::types::component Component>
         Component &Get()

@@ -8,6 +8,12 @@
 
 namespace shared
 {
+    namespace coder
+    {
+        class Reader;
+        class Writer;
+    }
+
     namespace ecs
     {
         class Entity;
@@ -31,6 +37,9 @@ namespace shared
         Simulation();
 
         ecs::Entity *CreateEntity();
+
+        void WriteBinary(coder::Writer &writer);
+        void FromBinary(coder::Reader &reader);
 
         template <ecs::component::types::component Component>
         const std::vector<Component *> &Get()

@@ -1,5 +1,6 @@
 #include <EntityComponentSystem/Component/Physics.hh>
 
+#include <Coder/Reader.hh>
 #include <Coder/Writer.hh>
 #include <EntityComponentSystem/Entity.hh>
 
@@ -14,5 +15,11 @@ namespace shared::ecs::component
     {
         writer.Vu(position.X());
         writer.Vu(position.Y());
+    }
+
+    void Physics::FromBinary(coder::Reader &reader)
+    {
+        position.X(reader.Vu());
+        position.Y(reader.Vu());
     }
 }

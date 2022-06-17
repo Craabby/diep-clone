@@ -13,6 +13,7 @@ namespace shared
 
     namespace coder
     {
+        class Reader;
         class Writer;
     }
 }
@@ -35,5 +36,6 @@ namespace shared::ecs::component
         Physics(Entity *);
 
         void WriteBinary(coder::Writer &writer);
+        void FromBinary(coder::Reader &reader);
     };
 }

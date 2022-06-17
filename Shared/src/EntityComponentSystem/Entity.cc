@@ -1,5 +1,6 @@
 #include <EntityComponentSystem/Entity.hh>
 
+#include <Coder/Reader.hh>
 #include <Coder/Writer.hh>
 #include <EntityComponentSystem/Component/Basic.hh>
 #include <EntityComponentSystem/Component/Physics.hh>
@@ -43,5 +44,22 @@ namespace shared::ecs
             Get<component::Basic>().WriteBinary(writer);
         if (Has<component::Physics>())
             Get<component::Physics>().WriteBinary(writer);
+    }
+
+    void Entity::FromBinary(coder::Reader &reader, bool isCreation)
+    {
+        if (isCreation)
+        {
+            uint32_t componentFlags = reader.Vu();
+            if (componentFlags & (1 << component::Basic::ID))
+                AppendComponent<component::Basic>();
+            if (componentFlags & (1 << component::Physics::ID))
+                AppendComponent<component::Physics>();
+        }
+
+        if (Has<component::Basic>())
+            Get<component::Basic>().FromBinary(reader);
+        if (Has<component::Physics>())
+            Get<component::Physics>().FromBinary(reader);
     }
 }
