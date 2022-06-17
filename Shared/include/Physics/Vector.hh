@@ -10,16 +10,16 @@ namespace shared
     public:
         Vector(float, float);
 
-        float X();
-        float Y();
+        float X() const;
+        float Y() const;
 
-        float X(float);
-        float Y(float);
+        void X(float);
+        void Y(float);
 
-        Vector &operator+(const Vector &) const;
-        Vector &operator-(const Vector &) const;
-        Vector &operator*(float) const;
-        Vector &operator/(float) const;
+        Vector operator+(const Vector &) const;
+        Vector operator-(const Vector &) const;
+        Vector operator*(float) const;
+        Vector operator/(float) const;
         Vector &operator/=(float);
         Vector &operator*=(float);
         Vector &operator+=(const Vector &);

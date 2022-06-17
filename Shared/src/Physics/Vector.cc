@@ -8,12 +8,12 @@ namespace shared
     {
     }
 
-    float Vector::X()
+    float Vector::X() const
     {
         return m_X;
     }
 
-    float Vector::Y()
+    float Vector::Y() const
     {
         return m_Y;
     }
@@ -35,7 +35,7 @@ namespace shared
 
     Vector Vector::operator-(const Vector &other) const
     {
-        return Vector(X() - other.X(), vector.Y(Y() - other.Y()));
+        return Vector(X() - other.X(), Y() - other.Y());
     }
 
     Vector Vector::operator*(float scale) const
