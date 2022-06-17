@@ -4,6 +4,8 @@
 #include <iostream>
 #include <thread>
 
+#include <EntityComponentSystem/Entity.hh>
+
 namespace shared
 {
     Simulation::Simulation()
@@ -23,5 +25,14 @@ namespace shared
 
     void Simulation::Tick()
     {
+    }
+
+    ecs::Entity *Simulation::CreateEntity()
+    {
+        ecs::Entity *entity = new ecs::Entity(this);
+
+        entities.push_back(entity);
+
+        return entity;
     }
 }

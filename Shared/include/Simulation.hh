@@ -30,6 +30,8 @@ namespace shared
 
         Simulation();
 
+        ecs::Entity *CreateEntity();
+
         template <ecs::component::types::component Component>
         const std::vector<Component *> &Get()
         {
