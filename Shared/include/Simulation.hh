@@ -25,6 +25,9 @@ namespace shared
         std::array<std::vector<void *>, ecs::component::types::componentCount> entityComponentTable;
 
     public:
+        void Tick();
+        void RunGameLoop();
+
         Simulation();
 
         template <ecs::component::types::component Component>

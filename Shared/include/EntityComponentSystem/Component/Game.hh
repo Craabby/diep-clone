@@ -2,8 +2,6 @@
 
 #include <cstdint>
 
-#include <Physics/Vector.hh>
-
 namespace shared
 {
     namespace ecs
@@ -19,20 +17,18 @@ namespace shared
 
 namespace shared::ecs::component
 {
-    class Physics
+    class Game
     {
         Entity *entity;
 
     public:
-        physics::Vector position = physics::Vector(0, 0);
-        physics::Vector velocity = physics::Vector(0, 0);
-
-        void Tick();
+        uint32_t xAxisSize = 2400;
+        uint32_t yAxisSize = 2400;
 
         bool updated = false;
-        static constexpr uint8_t ID = 2;
+        static constexpr uint8_t ID = 1;
 
-        Physics(Entity *);
+        Game(Entity *);
 
         void WriteBinary(coder::Writer &writer);
     };
