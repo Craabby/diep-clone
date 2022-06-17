@@ -35,6 +35,7 @@ namespace shared
         Simulation();
 
         ecs::Entity *CreateEntity();
+        void DestroyEntity(ecs::Entity *);
         void Tick();
         void RunGameLoop();
         uint32_t GetNextId();

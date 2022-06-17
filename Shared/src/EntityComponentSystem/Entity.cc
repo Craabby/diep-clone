@@ -54,7 +54,9 @@ namespace shared::ecs
                 AppendComponent<component::Physics>();
         }
 
-        Get<component::Basic>().FromBinary(reader);
-        Get<component::Physics>().FromBinary(reader);
+        if (Has<component::Basic>())
+            Get<component::Basic>().FromBinary(reader);
+        if (Has<component::Physics>())
+            Get<component::Physics>().FromBinary(reader);
     }
 }

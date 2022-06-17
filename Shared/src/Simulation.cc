@@ -1,5 +1,6 @@
 #include <Simulation.hh>
 
+#include <algorithm>
 #include <chrono>
 #include <functional>
 #include <iostream>
@@ -31,8 +32,8 @@ namespace shared
 
     uint32_t Simulation::GetNextId()
     {
-        // chose an id
-        return (uint32_t)entities.size();
+        nextId++;
+        return nextId;
     }
 
     ecs::Entity *Simulation::CreateEntity()
@@ -46,11 +47,15 @@ namespace shared
         return entity;
     }
 
+    void Simulation::DestroyEntity(ecs::Entity *entity)
+    {
+        entities.erase(std::find(entities.begin(), entities.end(), entity));
+        delete entity;
+    }
+
     coder::Writer Simulation::WriteBinary(std::function<bool(ecs::Entity *)> isCreation)
     {
         coder::Writer writer;
-
-        writer.Vu(0);
 
         for (ecs::Entity *entity : entities)
         {
@@ -64,6 +69,26 @@ namespace shared
             entity->WriteBinary(writer, creation);
         }
 
+        writer.Vu(0);
+
         return writer;
+    }
+
+    void Simulation::FromBinary(coder::Reader &reader)
+    {
+        while (true)
+        {
+            uint32_t idAndCreation = reader.Vu();
+            if (idAndCreation == 0)
+                break;
+            uint32_t id = idAndCreation >> 1;
+            bool creation = idAndCreation & 1;
+            ecs::Entity *entity = new ecs::Entity(this);
+            entity->id = id;
+            nextId = id;
+            entities.push_back(entity);
+
+            entity->FromBinary(reader, creation);
+        }
     }
 }
