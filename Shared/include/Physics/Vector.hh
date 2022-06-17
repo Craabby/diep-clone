@@ -1,6 +1,6 @@
 #pragma once
 
-namespace shared
+namespace shared::physics
 {
     class Vector
     {

@@ -2,9 +2,17 @@
 
 #include <cstdint>
 
-namespace shared::ecs
+namespace shared
 {
-    class Entity;
+    namespace ecs
+    {
+        class Entity;
+    }
+
+    namespace coder
+    {
+        class Writer;
+    }
 }
 
 namespace shared::ecs::component
@@ -18,5 +26,7 @@ namespace shared::ecs::component
         static constexpr uint8_t ID = 0;
 
         Basic(Entity *);
+
+        void WriteBinary(coder::Writer &writer);
     };
 }

@@ -1,6 +1,6 @@
 #include <Physics/Vector.hh>
 
-namespace shared
+namespace shared::physics
 {
     Vector::Vector(float x, float y)
         : m_X(x),

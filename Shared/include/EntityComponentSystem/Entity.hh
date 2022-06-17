@@ -9,6 +9,11 @@
 namespace shared
 {
     class Simulation;
+
+    namespace coder
+    {
+        class Writer;
+    }
 }
 
 namespace shared::ecs
@@ -19,8 +24,11 @@ namespace shared::ecs
         std::array<void *, component::types::componentCount> m_Components;
 
     public:
+        uint32_t id;
         Entity(Simulation *);
         ~Entity();
+
+        void WriteBinary(coder::Writer &, bool);
 
         template <component::types::component Component>
         Component &Get()
