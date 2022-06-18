@@ -37,7 +37,7 @@ namespace shared::ecs
         {
             if (m_Components[Component::ID] == nullptr)
                 throw std::runtime_error("tried to get nonexistant component from entity");
-            return *(Component *)&m_Components[Component::ID];
+            return *(Component *)m_Components[Component::ID];
         }
 
         template <component::types::component Component>
