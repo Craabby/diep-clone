@@ -1,0 +1,3 @@
+/home/ubuntu/Downloads/diep-clone/Client/CMakeFiles/rebuild_cache.dir
+/home/ubuntu/Downloads/diep-clone/Client/CMakeFiles/edit_cache.dir
+/home/ubuntu/Downloads/diep-clone/Client/CMakeFiles/diep-client.html.dir
