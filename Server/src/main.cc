@@ -27,20 +27,12 @@ int32_t main()
     ix::WebSocketServer server(8001);
 
     server.setOnClientMessageCallback([&](std::shared_ptr<ix::ConnectionState> connectionState, ix::WebSocket &webSocket, const ix::WebSocketMessagePtr &msg)
-                                          {
-        std::cout << static_cast<uint32_t>(msg->type) << std::endl;
+                                      {
         webSocket.disableAutomaticReconnection();
         if (msg->type == ix::WebSocketMessageType::Open)
-        {
             simulation.AddClient(&webSocket);
-            std::cout << "new websocket created" << std::endl;
-            shared::ecs::Entity *entity = simulation.CreateEntity();
-        } 
         else if (msg->type == ix::WebSocketMessageType::Close)
-        {
-            std::cout << "socket closed" << std::endl;
-            simulation.DeleteClient(&webSocket);
-        } });
+            simulation.DeleteClient(&webSocket); });
 
     server.listen();
     server.start();

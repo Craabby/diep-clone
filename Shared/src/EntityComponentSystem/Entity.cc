@@ -26,37 +26,52 @@ namespace shared::ecs
         DeleteComponent<component::Physics>(this);
     }
 
-    void Entity::WriteBinary(coder::Writer &writer, bool isCreation)
+    void Entity::WriteComponents(coder::Writer &writer)
     {
-        if (isCreation)
-        {
-            uint32_t componentFlags = 0;
-            componentFlags |= Has<component::Basic>() << component::Basic::ID;
-            componentFlags |= Has<component::Physics>() << component::Physics::ID;
-
-            writer.Vu(componentFlags);
-        }
-
         if (Has<component::Basic>())
             Get<component::Basic>().WriteBinary(writer);
         if (Has<component::Physics>())
             Get<component::Physics>().WriteBinary(writer);
     }
 
-    void Entity::FromBinary(coder::Reader &reader, bool isCreation)
+    void Entity::WriteBinaryCreation(coder::Writer &writer)
     {
-        if (isCreation)
-        {
-            uint32_t componentFlags = reader.Vu();
-            if (componentFlags & (1 << component::Basic::ID))
-                AppendComponent<component::Basic>();
-            if (componentFlags & (1 << component::Physics::ID))
-                AppendComponent<component::Physics>();
-        }
+        uint32_t componentFlags = 0;
 
+        componentFlags |= Has<component::Basic>() << component::Basic::ID;
+        componentFlags |= Has<component::Physics>() << component::Physics::ID;
+
+        writer.Vu(componentFlags);
+
+        WriteComponents(writer);
+    }
+
+    void Entity::WriteBinaryUpdate(coder::Writer &writer)
+    {
+        WriteComponents(writer);
+    }
+
+    void Entity::ReadComponents(coder::Reader &reader)
+    {
         if (Has<component::Basic>())
             Get<component::Basic>().FromBinary(reader);
         if (Has<component::Physics>())
             Get<component::Physics>().FromBinary(reader);
+    }
+
+    void Entity::FromBinaryCreation(coder::Reader &reader)
+    {
+        uint32_t componentFlags = reader.Vu();
+        if (componentFlags & (1 << component::Basic::ID))
+            AppendComponent<component::Basic>();
+        if (componentFlags & (1 << component::Physics::ID))
+            AppendComponent<component::Physics>();
+
+        ReadComponents(reader);
+    }
+
+    void Entity::FromBinaryUpdate(coder::Reader &reader)
+    {
+        ReadComponents(reader);
     }
 }

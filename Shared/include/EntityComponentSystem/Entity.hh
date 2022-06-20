@@ -24,13 +24,31 @@ namespace shared::ecs
         Simulation *simulation;
         std::array<void *, component::types::COMPONENT_COUNT> m_Components = {nullptr, nullptr};
 
+        void WriteComponents(coder::Writer &);
+        void WriteBinaryCreation(coder::Writer &);
+        void WriteBinaryUpdate(coder::Writer &);
+        void FromBinaryCreation(coder::Reader &);
+        void FromBinaryUpdate(coder::Reader &);
+        void ReadComponents(coder::Reader &);
+
     public:
         uint32_t id;
         Entity(Simulation *);
         ~Entity();
 
-        void WriteBinary(coder::Writer &writer, bool isCreation);
-        void FromBinary(coder::Reader &reader, bool isCreation);
+        // template spam :D
+        template <bool isCreation>
+        void WriteBinary(coder::Writer &writer)
+        {
+            if constexpr (isCreation) WriteBinaryCreation(writer);
+            else WriteBinaryUpdate(writer);
+        }
+        template <bool isCreation>
+        void FromBinary(coder::Reader &reader)
+        {
+            if constexpr (isCreation) FromBinaryCreation(reader);
+            else FromBinaryUpdate(reader);
+        }
 
         template <component::types::component Component>
         Component &Get()

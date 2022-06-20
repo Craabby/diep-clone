@@ -53,40 +53,80 @@ namespace shared
         delete entity;
     }
 
-    void Simulation::WriteBinary(coder::Writer &, std::function<bool(ecs::Entity *)> isCreation)
+    void Simulation::WriteBinary(coder::Writer &writer, std::function<EntityUpdateType(ecs::Entity *)> updateTypeOf)
     {
-        coder::Writer writer;
+        using ecs::Entity;
+        std::vector<Entity *> deletions;
+        std::vector<Entity *> updates;
+        std::vector<Entity *> creations;
 
-        for (ecs::Entity *entity : entities)
+        for (Entity *entity : entities)
         {
-            bool creation = isCreation(entity);
+            EntityUpdateType updateType = updateTypeOf(entity);
 
-            // the first bit of this value represents if the entity is a creati on
-            // it also contains the id bitshifted by one
-            // to reduce bandwidth usage
-            writer.Vu(creation | (entity->id << 1));
-
-            entity->WriteBinary(writer, creation);
+            if (updateType == EntityUpdateType::Deleted)
+                deletions.push_back(entity);
+            if (updateType == EntityUpdateType::Updated)
+                updates.push_back(entity);
+            if (updateType == EntityUpdateType::Created)
+                creations.push_back(entity);
         }
 
-        writer.Vu(0);
+        for (Entity *entity : deletions)
+            writer.Vu(entity->id);
+        writer.U8(0);
+        for (Entity *entity : updates)
+        {
+            writer.Vu(entity->id);
+            entity->WriteBinary<false>(writer);
+        }
+        writer.U8(0);
+        for (Entity *entity : creations)
+        {
+            writer.Vu(entity->id);
+            entity->WriteBinary<true>(writer);
+        }
+        writer.U8(0);
     }
 
     void Simulation::FromBinary(coder::Reader &reader)
     {
+        using ecs::Entity;
+
+        // deletions
         while (true)
         {
-            uint32_t idAndCreation = reader.Vu();
-            if (idAndCreation == 0)
+            uint32_t id = reader.Vu();
+            if (id == 0)
                 break;
-            uint32_t id = idAndCreation >> 1;
-            bool creation = idAndCreation & 1;
-            ecs::Entity *entity = new ecs::Entity(this);
+            entities.erase(std::find_if(entities.begin(), entities.end(), [id](Entity *entity)
+                                        { return entity->id == id; }));
+        }
+
+        // updates
+        while (true)
+        {
+            uint32_t id = reader.Vu();
+            if (id == 0)
+                break;
+            
+            (*std::find_if(entities.begin(), entities.end(), [id](Entity *entity)
+                                        { return entity->id == id; }))->FromBinary<false>(reader);
+        }
+
+        // creations
+        while (true)
+        {
+            uint32_t id = reader.Vu();
+            if (id == 0)
+                break;
+            
+            // i love heap allocation :D
+            Entity *entity = new Entity(this);
             entity->id = id;
             nextId = id;
             entities.push_back(entity);
-
-            entity->FromBinary(reader, creation);
+            entity->FromBinary<true>(reader);
         }
     }
 }

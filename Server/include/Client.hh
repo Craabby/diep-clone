@@ -18,7 +18,8 @@ namespace server
     class Client
     {
         std::vector<shared::ecs::Entity *> view;
-        
+        std::vector<shared::ecs::Entity *> FindEntitiesInView();
+
     public:
         Simulation *simulation;
         ix::WebSocket *socket;

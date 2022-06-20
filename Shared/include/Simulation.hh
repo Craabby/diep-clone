@@ -9,6 +9,13 @@
 
 namespace shared
 {
+    enum class EntityUpdateType
+    {
+        Updated,
+        Deleted,
+        Created
+    };
+
     namespace coder
     {
         class Reader;
@@ -40,7 +47,7 @@ namespace shared
         void Tick();
         void RunGameLoop();
         uint32_t GetNextId();
-        void WriteBinary(coder::Writer &, std::function<bool(ecs::Entity *)> isCreation);
+        void WriteBinary(coder::Writer &, std::function<EntityUpdateType(ecs::Entity *)> isCreation);
         void FromBinary(coder::Reader &reader);
 
         template <ecs::component::types::component Component>
