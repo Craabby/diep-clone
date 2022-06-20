@@ -53,7 +53,7 @@ namespace shared
         delete entity;
     }
 
-    coder::Writer Simulation::WriteBinary(std::function<bool(ecs::Entity *)> isCreation)
+    void Simulation::WriteBinary(coder::Writer &, std::function<bool(ecs::Entity *)> isCreation)
     {
         coder::Writer writer;
 
@@ -70,8 +70,6 @@ namespace shared
         }
 
         writer.Vu(0);
-
-        return writer;
     }
 
     void Simulation::FromBinary(coder::Reader &reader)

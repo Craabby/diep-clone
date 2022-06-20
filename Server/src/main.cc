@@ -10,13 +10,6 @@
 #include <EntityComponentSystem/Component/Physics.hh>
 #include <ServerSimulation.hh>
 
-void stuff(const shared::coder::Writer &thing)
-{
-    for (uint8_t a : thing.Data())
-        std::cout << std::to_string(a) << " ";
-    std::cout << std::endl;
-}
-
 int32_t main()
 {
     server::Simulation simulation;
@@ -34,18 +27,25 @@ int32_t main()
     ix::WebSocketServer server(8001);
 
     server.setOnClientMessageCallback([&](std::shared_ptr<ix::ConnectionState> connectionState, ix::WebSocket &webSocket, const ix::WebSocketMessagePtr &msg)
-                                      {
-        webSocket.sendBinary(ix::IXWebSocketSendData(std::vector<uint8_t>{32, 32, 32, 32, 33}));
-        std::cout << "client did something" << std::endl;
+                                          {
+        std::cout << static_cast<uint32_t>(msg->type) << std::endl;
         webSocket.disableAutomaticReconnection();
         if (msg->type == ix::WebSocketMessageType::Open)
         {
+            simulation.AddClient(&webSocket);
             std::cout << "new websocket created" << std::endl;
             shared::ecs::Entity *entity = simulation.CreateEntity();
+        } 
+        else if (msg->type == ix::WebSocketMessageType::Close)
+        {
+            std::cout << "socket closed" << std::endl;
+            simulation.DeleteClient(&webSocket);
         } });
 
     server.listen();
     server.start();
+
+    simulation.RunGameLoop();
 
     pause();
 }

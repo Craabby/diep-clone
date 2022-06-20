@@ -10,14 +10,7 @@
 int32_t main(int32_t argc, char **argv)
 {
     client::Socket socket(
-        "ws://localhost:8001/", [](const std::vector<uint8_t> &data)
-        {
-            std::cout << " > "; 
-            std::cout << std::to_string(data.size()) << std::endl;
-            for (uint8_t byte : data)
-            {
-                std::cout << std::to_string(byte) << " ";
-            } },
+        "ws://localhost:8001/", [](const std::vector<uint8_t> &data) {},
         []()
         {
             std::cout << "socket opened" << std::endl;
