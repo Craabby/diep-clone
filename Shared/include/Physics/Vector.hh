@@ -4,17 +4,18 @@ namespace shared::physics
 {
     class Vector
     {
+    protected:
         float m_X = 0;
         float m_Y = 0;
 
     public:
         Vector(float, float);
 
-        float X() const;
-        float Y() const;
+        virtual float X() const;
+        virtual float Y() const;
 
-        void X(float);
-        void Y(float);
+        virtual void X(float);
+        virtual void Y(float);
 
         Vector operator+(const Vector &) const;
         Vector operator-(const Vector &) const;
@@ -24,6 +25,5 @@ namespace shared::physics
         Vector &operator*=(float);
         Vector &operator+=(const Vector &);
         Vector &operator-=(const Vector &);
-        Vector &operator=(const Vector &);
     };
 }

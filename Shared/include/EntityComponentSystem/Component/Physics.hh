@@ -24,14 +24,26 @@ namespace shared::ecs::component
     {
         Entity *entity;
 
+        class PhysicsVector : public physics::Vector
+        {
+            Physics *physicsComponent;
+
+        public:
+            PhysicsVector(Physics *physicsComponent, float, float);
+            void X(float x);
+            void Y(float y);
+            float X();
+            float Y();
+        };
+
     public:
-        physics::Vector position = physics::Vector(0, 0);
-        physics::Vector velocity = physics::Vector(0, 0);
+        physics::Vector position = PhysicsVector(this, 0, 0);
+        physics::Vector velocity = PhysicsVector(this, 0, 0);
 
         void Tick();
 
         bool updated = false;
-        static constexpr uint8_t ID = 2;
+        static constexpr uint8_t ID = 3;
 
         Physics(Entity *);
 

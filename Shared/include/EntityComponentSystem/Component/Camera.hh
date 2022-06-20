@@ -18,24 +18,19 @@ namespace shared
 
 namespace shared::ecs::component
 {
-    class Game
+    class Camera
     {
         Entity *entity;
-
-        uint32_t m_Width = 2400;
-        uint32_t m_Height = 2400;
+        Entity *player;
 
     public:
         bool updated = false;
-        static constexpr uint8_t ID = 2;
+        static constexpr uint8_t ID = 1;
 
-        Game(Entity *);
+        Camera(Entity *);
 
-        uint32_t Width();
-        uint32_t Height();
-
-        void Width(uint32_t);
-        void Height(uint32_t);
+        Entity *Player();
+        void Player(Entity *);
 
         void WriteBinary(coder::Writer &writer);
         void FromBinary(coder::Reader &reader);

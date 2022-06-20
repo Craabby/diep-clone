@@ -77,12 +77,4 @@ namespace shared::physics
 
         return *this;
     }
-
-    Vector &Vector::operator=(const Vector &other)
-    {
-        X(other.X());
-        Y(other.Y());
-
-        return *this;
-    }
 }

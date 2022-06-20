@@ -6,6 +6,34 @@
 
 namespace shared::ecs::component
 {
+    Physics::PhysicsVector::PhysicsVector(Physics *entity, float x, float y)
+        : physicsComponent(entity),
+          physics::Vector(x, y)
+    {
+    }
+
+    float Physics::PhysicsVector::X()
+    {
+        return m_X;
+    }
+
+    float Physics::PhysicsVector::Y()
+    {
+        return m_Y;
+    }
+
+    void Physics::PhysicsVector::X(float x)
+    {
+        physicsComponent->updated = true;
+        m_X = x;
+    }
+
+    void Physics::PhysicsVector::Y(float y)
+    {
+        physicsComponent->updated = true;
+        m_Y = y;
+    }
+
     Physics::Physics(Entity *entity)
         : entity(entity)
     {

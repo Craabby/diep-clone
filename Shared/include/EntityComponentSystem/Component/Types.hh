@@ -2,7 +2,7 @@
 
 namespace shared::ecs::component::types
 {
-    constexpr size_t COMPONENT_COUNT = 3;
+    constexpr size_t COMPONENT_COUNT = 4;
     
     // TODO: check if the constructor has signature `Entity *`
     template <class Component>
