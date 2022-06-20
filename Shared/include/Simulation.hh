@@ -13,7 +13,8 @@ namespace shared
     {
         Updated,
         Deleted,
-        Created
+        Created,
+        DontSend
     };
 
     namespace coder

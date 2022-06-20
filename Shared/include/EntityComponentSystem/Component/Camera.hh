@@ -21,7 +21,7 @@ namespace shared::ecs::component
     class Camera
     {
         Entity *entity;
-        Entity *player;
+        int32_t player;
 
     public:
         bool updated = false;
@@ -29,8 +29,8 @@ namespace shared::ecs::component
 
         Camera(Entity *);
 
-        Entity *Player();
-        void Player(Entity *);
+        int32_t Player();
+        void Player(int32_t);
 
         void WriteBinary(coder::Writer &writer);
         void FromBinary(coder::Reader &reader);

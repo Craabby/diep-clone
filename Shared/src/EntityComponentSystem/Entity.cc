@@ -3,6 +3,8 @@
 #include <Coder/Reader.hh>
 #include <Coder/Writer.hh>
 #include <EntityComponentSystem/Component/Basic.hh>
+#include <EntityComponentSystem/Component/Camera.hh>
+#include <EntityComponentSystem/Component/Game.hh>
 #include <EntityComponentSystem/Component/Physics.hh>
 #include <EntityComponentSystem/Component/Types.hh>
 
@@ -23,6 +25,8 @@ namespace shared::ecs
     Entity::~Entity()
     {
         DeleteComponent<component::Basic>(this);
+        DeleteComponent<component::Camera>(this);
+        DeleteComponent<component::Game>(this);
         DeleteComponent<component::Physics>(this);
     }
 
@@ -30,6 +34,10 @@ namespace shared::ecs
     {
         if (Has<component::Basic>())
             Get<component::Basic>().WriteBinary(writer);
+        if (Has<component::Camera>())
+            Get<component::Camera>().WriteBinary(writer);
+        if (Has<component::Game>())
+            Get<component::Game>().WriteBinary(writer);
         if (Has<component::Physics>())
             Get<component::Physics>().WriteBinary(writer);
     }
@@ -39,6 +47,8 @@ namespace shared::ecs
         uint32_t componentFlags = 0;
 
         componentFlags |= Has<component::Basic>() << component::Basic::ID;
+        componentFlags |= Has<component::Camera>() << component::Basic::ID;
+        componentFlags |= Has<component::Game>() << component::Basic::ID;
         componentFlags |= Has<component::Physics>() << component::Physics::ID;
 
         writer.Vu(componentFlags);
@@ -55,6 +65,10 @@ namespace shared::ecs
     {
         if (Has<component::Basic>())
             Get<component::Basic>().FromBinary(reader);
+        if (Has<component::Camera>())
+            Get<component::Camera>().FromBinary(reader);
+        if (Has<component::Game>())
+            Get<component::Game>().FromBinary(reader);
         if (Has<component::Physics>())
             Get<component::Physics>().FromBinary(reader);
     }
@@ -64,6 +78,10 @@ namespace shared::ecs
         uint32_t componentFlags = reader.Vu();
         if (componentFlags & (1 << component::Basic::ID))
             AppendComponent<component::Basic>();
+        if (componentFlags & (1 << component::Camera::ID))
+            AppendComponent<component::Camera>();
+        if (componentFlags & (1 << component::Game::ID))
+            AppendComponent<component::Game>();
         if (componentFlags & (1 << component::Physics::ID))
             AppendComponent<component::Physics>();
 

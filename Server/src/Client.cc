@@ -6,17 +6,25 @@
 #include <IXWebSocket.h>
 
 #include <Coder/Writer.hh>
+#include <EntityComponentSystem/Component/Camera.hh>
 #include <EntityComponentSystem/Entity.hh>
 #include <ServerSimulation.hh>
 
-using shared::ecs::Entity;
+using namespace shared::ecs;
 
 namespace server
 {
     Client::Client(Simulation *simulation, ix::WebSocket *socket)
         : socket(socket),
-          simulation(simulation)
+          simulation(simulation),
+          camera(simulation->CreateEntity())
     {
+        camera->AppendComponent<component::Camera>();
+    }
+
+    Client::~Client()
+    {
+        delete camera;
     }
 
     // TODO: use spatial hashing to render only the close entities
@@ -40,6 +48,8 @@ namespace server
         // TODO: fix this ugly pile of shit
         simulation->WriteBinary(writer, [entitiesInView, this](Entity *entity) -> shared::EntityUpdateType
                                 { 
+            if (entity->Has<component::Camera>() && entity != this->camera)
+                return shared::EntityUpdateType::DontSend;
             if (std::find(entitiesInView.begin(), entitiesInView.end(), entity) == entitiesInView.end())
             {
                 view.erase(std::find(view.begin(), view.end(), entity));

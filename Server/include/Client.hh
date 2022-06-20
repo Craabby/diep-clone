@@ -17,6 +17,7 @@ namespace server
     class Simulation;
     class Client
     {
+        shared::ecs::Entity *camera;
         std::vector<shared::ecs::Entity *> view;
         std::vector<shared::ecs::Entity *> FindEntitiesInView();
 
@@ -25,6 +26,7 @@ namespace server
         ix::WebSocket *socket;
 
         Client(Simulation *, ix::WebSocket *);
+        ~Client();
         void SendUpdate();
     };
 }
