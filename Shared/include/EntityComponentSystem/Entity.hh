@@ -21,8 +21,7 @@ namespace shared::ecs
 {
     class Entity
     {
-        Simulation *simulation;
-        std::array<void *, component::types::COMPONENT_COUNT> m_Components = {nullptr, nullptr};
+        std::array<void *, component::types::COMPONENT_COUNT> m_Components = {nullptr, nullptr, nullptr, nullptr};
 
         void WriteComponents(coder::Writer &);
         void WriteBinaryCreation(coder::Writer &);
@@ -32,6 +31,7 @@ namespace shared::ecs
         void ReadComponents(coder::Reader &);
 
     public:
+        Simulation *simulation;
         uint32_t id;
         Entity(Simulation *);
         ~Entity();
@@ -40,14 +40,18 @@ namespace shared::ecs
         template <bool isCreation>
         void WriteBinary(coder::Writer &writer)
         {
-            if constexpr (isCreation) WriteBinaryCreation(writer);
-            else WriteBinaryUpdate(writer);
+            if constexpr (isCreation)
+                WriteBinaryCreation(writer);
+            else
+                WriteBinaryUpdate(writer);
         }
         template <bool isCreation>
         void FromBinary(coder::Reader &reader)
         {
-            if constexpr (isCreation) FromBinaryCreation(reader);
-            else FromBinaryUpdate(reader);
+            if constexpr (isCreation)
+                FromBinaryCreation(reader);
+            else
+                FromBinaryUpdate(reader);
         }
 
         template <component::types::component Component>

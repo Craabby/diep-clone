@@ -1,7 +1,10 @@
 #include <EntityComponentSystem/Component/Camera.hh>
 
+#include <algorithm>
+
 #include <Coder/Reader.hh>
 #include <Coder/Writer.hh>
+#include <EntityComponentSystem/Component/Physics.hh>
 #include <EntityComponentSystem/Entity.hh>
 #include <Simulation.hh>
 
@@ -9,27 +12,45 @@ namespace shared::ecs::component
 {
     Camera::Camera(Entity *entity)
         : entity(entity),
-          player(-1)
+          playerId(-1),
+          inputs({{0, 0}, false, false, true, true})
     {
     }
 
-    int32_t Camera::Player()
+    void Camera::Tick()
     {
-        return player;
+        if (PlayerId() == -1)
+            return;
+        physics::Vector force(0, 0);
+        if (inputs.up) force.Y(force.Y() + 1);
+        if (inputs.left) force.X(force.X() - 1);
+        if (inputs.down) force.Y(force.Y() - 1);
+        if (inputs.right) force.X(force.X() + 1);
+
+        force.Distance(1);
+
+        std::vector<Entity *> *entities = &entity->simulation->entities;
+        Entity *player = *std::find(entities->begin(), entities->end(), entity);
+        player->Get<Physics>().velocity += force;
     }
 
-    void Camera::Player(int32_t player)
+    int32_t Camera::PlayerId()
     {
-        this->player = player;
+        return playerId;
+    }
+
+    void Camera::PlayerId(int32_t playerId)
+    {
+        this->playerId = playerId;
     }
 
     void Camera::WriteBinary(coder::Writer &writer)
     {
-        writer.Vi(player);
+        writer.Vi(playerId);
     }
 
     void Camera::FromBinary(coder::Reader &reader)
     {
-        player = reader.Vi();
+        playerId = reader.Vi();
     }
 }

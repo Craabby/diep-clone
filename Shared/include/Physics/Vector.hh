@@ -17,6 +17,9 @@ namespace shared::physics
         virtual void X(float);
         virtual void Y(float);
 
+        float Distance() const;
+        Vector &Distance(float x);
+
         Vector operator+(const Vector &) const;
         Vector operator-(const Vector &) const;
         Vector operator*(float) const;

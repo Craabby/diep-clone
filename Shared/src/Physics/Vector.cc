@@ -1,5 +1,7 @@
 #include <Physics/Vector.hh>
 
+#include <cmath>
+
 namespace shared::physics
 {
     Vector::Vector(float x, float y)
@@ -26,6 +28,19 @@ namespace shared::physics
     void Vector::Y(float y)
     {
         m_Y = y;
+    }
+
+    Vector &Vector::Distance(float x)
+    {
+        *this /= Distance();
+        *this *= x;
+
+        return *this;
+    }
+
+    float Vector::Distance() const
+    {
+        return sqrt(X() * X() + Y() * Y());
     }
 
     Vector Vector::operator+(const Vector &other) const

@@ -6,6 +6,8 @@
 #include <IXWebSocket.h>
 
 #include <Client.hh>
+#include <EntityComponentSystem/Component/Camera.hh>
+#include <EntityComponentSystem/Entity.hh>
 
 namespace server
 {
@@ -47,6 +49,14 @@ namespace server
     {
         shared::Simulation::Tick();
 
+        for (Client *client : clients)
+            client->Tick();
+
+        for (shared::ecs::Entity *entity : entities)
+            if (entity->Has<shared::ecs::component::Camera>())
+                entity->Get<shared::ecs::component::Camera>().Tick();
+
+        // update everything after ticking everything
         SendUpdate();
     }
 

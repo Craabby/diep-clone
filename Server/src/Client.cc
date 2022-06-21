@@ -7,6 +7,7 @@
 
 #include <Coder/Writer.hh>
 #include <EntityComponentSystem/Component/Camera.hh>
+#include <EntityComponentSystem/Component/Physics.hh>
 #include <EntityComponentSystem/Entity.hh>
 #include <ServerSimulation.hh>
 
@@ -20,6 +21,12 @@ namespace server
           camera(simulation->CreateEntity())
     {
         camera->AppendComponent<component::Camera>();
+
+        // simulate the player spawning
+        // TODO: add spawn packet lol
+        Entity *entity = simulation->CreateEntity();
+        camera->Get<component::Camera>().PlayerId();
+        entity->AppendComponent<component::Physics>();
     }
 
     Client::~Client()
@@ -37,6 +44,11 @@ namespace server
             entities.push_back(entity);
 
         return entities;
+    }
+ 
+    void Client::Tick()
+    {
+
     }
 
     void Client::SendUpdate()

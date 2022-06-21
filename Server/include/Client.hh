@@ -27,6 +27,8 @@ namespace server
 
         Client(Simulation *, ix::WebSocket *);
         ~Client();
+
+        void Tick();
         void SendUpdate();
     };
 }
