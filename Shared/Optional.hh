@@ -1,12 +1,14 @@
 #pragma once
 
 #include <cassert>
+#include <iostream>
 
 namespace shared
 {
 	template <typename T>
 	class Optional
 	{
+		bool isNull = true;
 		union Option
 		{
 			T value;
@@ -14,12 +16,31 @@ namespace shared
 		} option;
 
 	public:
-		bool isNull = true;
+		bool Null()
+		{
+			return isNull;
+		}
+
+		bool Exists()
+		{
+			return isNull == false;
+		}
 
 		T *Get()
 		{
-			assert(isNull == false);
+			assert(Exists());
 			return &option.value;
+		}
+
+		T &Assert(const std::string &assertion)
+		{
+			if (isNull)
+			{
+				std::cerr << assertion << std::endl;
+				assert(false);
+			}
+
+			return **this;
 		}
 
 		void Set(const T &value)
@@ -46,6 +67,11 @@ namespace shared
 		T &operator*()
 		{
 			return *Get();
+		}
+
+		T &operator()(const std::string &assertion)
+		{
+			return Assert(assertion);
 		}
 	};
 }

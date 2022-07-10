@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <vector>
 
 #include <Shared/Optional.hh>
 
@@ -13,12 +14,13 @@ namespace shared
 #define MAX T::MAX_ITEMS
 
         uint32_t startingId;
-        Optional<T> data[MAX];
+        std::vector<Optional<T>> data;
 
     public:
         Factory()
             : startingId(0)
         {
+            data.reserve(MAX);
         }
 
         ~Factory()
@@ -42,18 +44,19 @@ namespace shared
                 return id;
             }
 
-            std::cout << "ran out of ids" << std::endl;
-            exit(1);
+            assert(false);
         }
 
         void Delete(uint32_t id)
         {
+            if (data[id].isNull())
+                std::cout << "tried to delete nonexistant entity" << std::endl;
             data[id].Delete();
         }
 
         bool Exists(uint32_t id)
         {
-            return data[id].isNull == false;
+            return data[id].Exists();
         }
 
         T &Get(uint32_t id)
