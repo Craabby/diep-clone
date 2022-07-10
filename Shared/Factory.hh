@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <iostream>
 
+#include <Shared/Optional.hh>
+
 namespace shared
 {
     template <class T>
@@ -11,7 +13,7 @@ namespace shared
 #define MAX T::MAX_ITEMS
 
         uint32_t startingId;
-        T *data[MAX] = {nullptr};
+        Optional<T> data[MAX] = {Optional<T>()};
 
     public:
         Factory()
@@ -32,9 +34,8 @@ namespace shared
                 if (Exists(id))
                     continue;
 
-                data[id] = new T(args...);
-
-                Get(id)->id = id;
+                data[id].Set(T{args...});
+                Get(id).id = id;
 
                 startingId = (startingId + 1) % MAX;
 
@@ -47,18 +48,17 @@ namespace shared
 
         void Delete(uint32_t id)
         {
-            delete data[id];
-            data[id] = nullptr;
+            data[id].Delete();
         }
 
         bool Exists(uint32_t id)
         {
-            return data[id] != nullptr;
+            return data[id].isNull == false;
         }
 
-        T *Get(uint32_t id)
+        T &Get(uint32_t id)
         {
-            return data[id];
+            return *data[id];
         }
 #undef MAX
     };

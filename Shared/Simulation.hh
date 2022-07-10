@@ -10,7 +10,7 @@ namespace shared
         void Tick();
 
     public:
-        static constexpr uint32_t MAX_ITEMS = 256;
+        static constexpr uint32_t MAX_ITEMS = 4;
 
         Factory<ecs::Entity> entityFactory;
         uint32_t id;

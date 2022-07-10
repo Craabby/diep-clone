@@ -2,12 +2,18 @@
 
 #include <cstdint>
 
-namespace ecs
+#include <Shared/EntityComponentSystem/Component/Physics.hh>
+#include <Shared/Optional.hh>
+
+namespace shared::ecs
 {
 	class Entity
 	{
-		public:
+	public:
+		Optional<component::Physics> physics;
+		
 		static constexpr uint32_t MAX_ITEMS = 131072;
+		uint32_t id;
 
 		Entity();
 	};
