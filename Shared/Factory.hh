@@ -13,7 +13,7 @@ namespace shared
 #define MAX T::MAX_ITEMS
 
         uint32_t startingId;
-        Optional<T> data[MAX] = {Optional<T>()};
+        Optional<T> data[MAX];
 
     public:
         Factory()
