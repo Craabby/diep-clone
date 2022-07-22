@@ -11,10 +11,13 @@ namespace shared::ecs
 	{
 	public:
 		Optional<component::Physics> physics;
-		
+
 		static constexpr uint32_t MAX_ITEMS = 131072;
 		uint32_t id;
 
 		Entity();
+
+        void WriteBinary(Writer &, bool isCreation);
+        void ReadBinary(Reader &, bool isCreation);
 	};
 }

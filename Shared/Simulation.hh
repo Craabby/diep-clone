@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Shared/Factory.hh>
+#include <Shared/EntityComponentSystem/Component/Camera.hh>
 #include <Shared/EntityComponentSystem/Entity.hh>
 
 namespace shared
@@ -17,5 +18,8 @@ namespace shared
 
         Simulation();
         void RunGameLoop();
+    
+        void WriteBinary(Writer &, Optional<ecs::component::Camera &> viewer);
+        void ReadBinary(Reader &);
     };
 }

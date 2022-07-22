@@ -42,23 +42,22 @@ namespace shared
                 return id;
             }
 
-            std::cout << "ran out of ids" << std::endl;
-            exit(1);
+            assert(false);
         }
 
         void Delete(uint32_t id)
         {
-            data[id].Delete();
+            data[id]("tried to delete nonexistant entity").Delete();
         }
 
         bool Exists(uint32_t id)
         {
-            return data[id].isNull == false;
+            return data[id].Null() == false;
         }
 
         T &Get(uint32_t id)
         {
-            return *data[id];
+            return data[id]("tried to get nonixistant entity");
         }
 #undef MAX
     };

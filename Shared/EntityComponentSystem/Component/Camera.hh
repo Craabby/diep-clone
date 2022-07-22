@@ -10,10 +10,11 @@ namespace shared
 
 namespace shared::ecs::component
 {
-    class Physics
+    class Camera
     {
-        float m_X;
-        float m_Y;
+        float m_X = 0;
+        float m_Y = 0;
+        float m_Fov = 1;
 
     public:
         static constexpr uint32_t ID = 1;
@@ -24,6 +25,8 @@ namespace shared::ecs::component
         float X(float);
         float Y();
         float Y(float);
+        float Fov();
+        float Fov(float);
 
         void WriteBinary(Writer &);
         void ReadBinary(Reader &);
