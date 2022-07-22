@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <vector>
 
 #include <Shared/Optional.hh>
 
@@ -13,12 +14,13 @@ namespace shared
 #define MAX T::MAX_ITEMS
 
         uint32_t startingId;
-        Optional<T> data[MAX];
+        std::vector<Optional<T>> data;
 
     public:
         Factory()
             : startingId(0)
         {
+            data.reserve(MAX);
         }
 
         ~Factory()
@@ -52,7 +54,7 @@ namespace shared
 
         bool Exists(uint32_t id)
         {
-            return data[id].Null() == false;
+            return data[id].Exists();
         }
 
         T &Get(uint32_t id)
