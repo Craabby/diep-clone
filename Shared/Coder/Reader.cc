@@ -1,6 +1,6 @@
 #include <Shared/Coder/Reader.hh>
 
-namespace shared::coder
+namespace shared
 {
     Reader::Reader(uint8_t *buffer, size_t size)
         : buffer(buffer),

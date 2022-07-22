@@ -2,7 +2,7 @@
 
 #include <vector>
 
-namespace shared::coder
+namespace shared
 {
     const std::vector<uint8_t> &Writer::Data() const
     {

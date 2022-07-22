@@ -49,17 +49,6 @@ namespace shared
 			option.value = value;
 		}
 
-		T &Assert(const std::string &assertion)
-		{
-			if (isNull)
-			{
-				std::cerr << assertion << std::endl;
-				assert(false);
-			}
-
-			return **this;
-		}
-
 		void Delete()
 		{
 			isNull = true;
@@ -83,11 +72,6 @@ namespace shared
 		T &operator*()
 		{
 			return *Get();
-		}
-
-		T &operator()(const std::string &assertion)
-		{
-			return Assert(assertion);
 		}
 	};
 }
