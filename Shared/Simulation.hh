@@ -19,7 +19,7 @@ namespace shared
         Simulation();
         void RunGameLoop();
     
-        void WriteBinary(Writer &, Optional<ecs::component::Camera &> viewer);
+        void WriteBinary(Writer &, Optional<ecs::component::Camera *> viewer);
         void ReadBinary(Reader &);
     };
 }

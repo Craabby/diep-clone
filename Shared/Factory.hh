@@ -20,7 +20,7 @@ namespace shared
         Factory()
             : startingId(0)
         {
-            data.reserve(MAX);
+            data.resize(MAX);
         }
 
         ~Factory()
@@ -49,7 +49,8 @@ namespace shared
 
         void Delete(uint32_t id)
         {
-            data[id]("tried to delete nonexistant entity").Delete();
+            data[id]("tried to delete nonexistant entity");
+            data[id].Delete();
         }
 
         bool Exists(uint32_t id)

@@ -9,4 +9,9 @@ namespace shared
     void Simulation::RunGameLoop()
     {
     }
+
+    void Simulation::WriteBinary(Writer &, Optional<ecs::component::Camera *> viewer)
+    {
+
+    }
 }

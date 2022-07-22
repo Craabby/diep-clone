@@ -16,6 +16,16 @@ namespace shared
 		} option;
 
 	public:
+		Optional(const T &value)
+		{
+			Set(value);
+		}
+
+		Optional()
+		{
+			isNull = true;
+		}
+
 		bool Null()
 		{
 			return isNull;
