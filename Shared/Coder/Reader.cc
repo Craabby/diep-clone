@@ -50,6 +50,12 @@ namespace shared
         return (0 - (out & 1)) ^ (out >> 1);
     }
 
+    float Reader::Float()
+    {
+        uint32_t uint32Value = U32();
+        return *(float *)&uint32Value;
+    }
+
     std::string Reader::String()
     {
         std::string string;

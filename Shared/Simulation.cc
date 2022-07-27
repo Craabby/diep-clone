@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include <Shared/Coder/Writer.hh>
+
 namespace shared
 {
     Simulation::Simulation()
@@ -63,11 +65,35 @@ namespace shared
         for (uint32_t entityId : entitiesInView)
         {
             EntityUpdateType updateType = FindEntityUpdateType(entityId, viewer);
+
+            if (updateType == EntityUpdateType::Deleted)
+                deletions.push_back(entityId);
+            if (updateType == EntityUpdateType::Updated)
+                updates.push_back(entityId);
+            if (updateType == EntityUpdateType::Created)
+                creations.push_back(entityId);
         }
+
+        // the id may end up being 0
+        // the arrays are null terminated
+        for (uint32_t id : deletions)
+            writer.Vu(id + 1);
+        writer.U8(0);
+        for (uint32_t id : updates)
+        {
+            writer.Vu(id + 1);
+            entityFactory.Get(id).WriteBinary<false>(writer);
+        }
+        writer.U8(0);
+        for (uint32_t id : creations)
+        {
+            writer.Vu(id + 1);
+            entityFactory.Get(id).WriteBinary<true>(writer);
+        }
+        writer.U8(0);
     }
 
     void Simulation::ReadBinary(Reader &)
     {
-        
     }
 }

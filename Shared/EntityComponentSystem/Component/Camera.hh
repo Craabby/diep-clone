@@ -18,11 +18,13 @@ namespace shared::ecs::component
         float m_Fov = 1;
 
     public:
-        static constexpr uint32_t ID = 1;
+        static constexpr uint32_t ID = 0;
+        bool updated;
+        uint32_t ownerId;
 
         std::vector<uint32_t> view;
 
-        uint32_t ownerId;
+        Camera(uint32_t ownerId);
 
         float X();
         float X(float);

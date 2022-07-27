@@ -12,12 +12,22 @@ namespace shared::ecs
 	class Entity
 	{
 		std::array<void *, 2> components = {nullptr};
-	public:
 
+		void WriteComponents(Writer &);
+		void WriteBinaryCreation(Writer &);
+		void WriteBinaryUpdate(Writer &);
+		void ReadBinaryCreation(Reader &);
+		void ReadBinaryUpdate(Reader &);
+		void ReadComponents(Reader &);
+
+	public:
 		static constexpr uint32_t MAX_ITEMS = 131072;
 		uint32_t id;
 
 		Entity();
+		~Entity();
+
+		void Reset();
 
 		template <typename T>
 		T &Get()
@@ -30,7 +40,7 @@ namespace shared::ecs
 		void Append()
 		{
 			assert(components[T::ID] == nullptr);
-			components[T::ID] = new T();
+			components[T::ID] = new T(id);
 		}
 
 		template <typename T>
@@ -39,7 +49,21 @@ namespace shared::ecs
 			return components[T::ID] != nullptr;
 		}
 
-        void WriteBinary(Writer &, bool isCreation);
-        void ReadBinary(Reader &, bool isCreation);
+		template <bool isCreation>
+		void WriteBinary(Writer &writer)
+		{
+			if constexpr (isCreation)
+				WriteBinaryCreation(writer);
+			else
+				WriteBinaryUpdate(writer);
+		}
+		template <bool isCreation>
+		void ReadBinary(Reader &reader)
+		{
+			if constexpr (isCreation)
+				ReadBinaryCreation(reader);
+			else
+				ReadBinaryUpdate(reader);
+		}
 	};
 }

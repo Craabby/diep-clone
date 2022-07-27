@@ -13,6 +13,7 @@ namespace shared
 		{
 			T value;
 			Option() {}
+			~Option() {}
 		} option;
 
 	public:
