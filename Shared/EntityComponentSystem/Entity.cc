@@ -4,6 +4,5 @@ namespace shared::ecs
 {
 	Entity::Entity()
 	{
-		
 	}
 }

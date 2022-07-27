@@ -11,6 +11,8 @@ int main()
     uint32_t entityId = simulation.entityFactory.Create();
     shared::ecs::Entity &entity = simulation.entityFactory.Get(entityId);
 
+    entity.Append<shared::ecs::component::Camera>();
+
     shared::Writer writer;
-    simulation.WriteBinary(writer, shared::Optional<shared::ecs::component::Camera *>());
+    simulation.WriteBinary(writer, &entity.Get<shared::ecs::component::Camera>());
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 namespace shared
 {
@@ -18,6 +19,8 @@ namespace shared::ecs::component
 
     public:
         static constexpr uint32_t ID = 1;
+
+        std::vector<uint32_t> view;
 
         uint32_t ownerId;
 
