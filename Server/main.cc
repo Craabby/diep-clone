@@ -32,12 +32,12 @@ int main()
     entity2.Append<Physics>();
 
     Physics &p = entity2.Get<Physics>();
-    p.X(1000);
-    p.Y(2000);
+    p.x = 1000;
+    p.y = 2000;
 
     Tick();
     Tick();
-    p.X(p.X() + 1);
+    p.x += 1;
     Tick();
     Tick();
 }

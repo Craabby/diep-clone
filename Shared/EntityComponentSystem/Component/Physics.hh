@@ -21,8 +21,8 @@ namespace shared::ecs::component
         
         Physics(uint32_t ownerId);
 
-        DECLARE_COMPONENT_FIELD(float, X)
-        DECLARE_COMPONENT_FIELD(float, Y)
+        DECLARE_COMPONENT_FIELD(float, Physics, x)
+        DECLARE_COMPONENT_FIELD(float, Physics, y)
 
         void WriteBinary(Writer &);
         void ReadBinary(Reader &);
