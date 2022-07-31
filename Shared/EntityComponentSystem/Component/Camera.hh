@@ -3,35 +3,27 @@
 #include <cstdint>
 #include <vector>
 
+#include <Shared/EntityComponentSystem/Component/Types.hh>
+
 namespace shared
 {
-    class Writer;
-    class Reader;
+    struct Writer;
+    struct Reader;
 }
 
 namespace shared::ecs::component
 {
-    class Camera
+    struct Camera
     {
-        float m_X = 0;
-        float m_Y = 0;
-        float m_Fov = 1;
-
-    public:
         static constexpr uint32_t ID = 0;
         bool updated;
         uint32_t ownerId;
-
+        DECLARE_COMPONENT_FIELD(float, Camera, x)
+        DECLARE_COMPONENT_FIELD(float, Camera, y)
+        DECLARE_COMPONENT_FIELD(float, Camera, fov)
         std::vector<uint32_t> view;
 
         Camera(uint32_t ownerId);
-
-        float X();
-        float X(float);
-        float Y();
-        float Y(float);
-        float Fov();
-        float Fov(float);
 
         void WriteBinary(Writer &);
         void ReadBinary(Reader &);

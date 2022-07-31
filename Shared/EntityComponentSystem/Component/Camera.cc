@@ -11,6 +11,10 @@ namespace shared::ecs::component
     {
     }
 
+    DEFINE_COMPONENT_FIELD(float, Camera, x)
+    DEFINE_COMPONENT_FIELD(float, Camera, y)
+    DEFINE_COMPONENT_FIELD(float, Camera, fov)
+
     void Camera::WriteBinary(Writer &writer)
     {
     }

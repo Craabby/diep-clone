@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include <Shared/Coder/Reader.hh>
 #include <Shared/Coder/Writer.hh>
 
 namespace shared
@@ -58,7 +59,6 @@ namespace shared
     {
         std::vector<uint32_t> deletions;
         std::vector<uint32_t> updates;
-        std::vector<uint32_t> creations;
 
         std::vector<uint32_t> entitiesInView = FindEntitiesInView(viewer);
 
@@ -71,7 +71,7 @@ namespace shared
             if (updateType == EntityUpdateType::Updated)
                 updates.push_back(entityId);
             if (updateType == EntityUpdateType::Created)
-                creations.push_back(entityId);
+                updates.push_back(entityId);
         }
 
         // the id may end up being 0
@@ -82,18 +82,35 @@ namespace shared
         for (uint32_t id : updates)
         {
             writer.Vu(id + 1);
-            entityFactory.Get(id).WriteBinary<false>(writer);
-        }
-        writer.U8(0);
-        for (uint32_t id : creations)
-        {
-            writer.Vu(id + 1);
-            entityFactory.Get(id).WriteBinary<true>(writer);
+            entityFactory.Get(id).WriteBinary(writer);
         }
         writer.U8(0);
     }
 
-    void Simulation::ReadBinary(Reader &)
+    void Simulation::ReadBinary(Reader &reader)
     {
+        while (true)
+        {
+            uint32_t id = reader.Vu();
+            if (id == 0)
+                break;
+            id--;
+
+            entityFactory.Delete(id);
+        }
+
+        while (true)
+        {
+            uint32_t id = reader.Vu();
+            if (id == 0)
+                break;
+            id--;
+
+            bool isCreated = entityFactory.Exists(id) == false;
+
+            if (isCreated)
+                entityFactory.Create(id);
+            entityFactory.Get(id).ReadBinary(reader, isCreated);
+        }
     }
 }

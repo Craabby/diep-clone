@@ -14,22 +14,21 @@ namespace shared
         Private
     };
 
-    class Simulation
+    struct Simulation
     {
-        void Tick();
-        std::vector<uint32_t> FindEntitiesInView(ecs::component::Camera *viewer);
-        EntityUpdateType FindEntityUpdateType(uint32_t id, ecs::component::Camera *);
-
-    public:
         static constexpr uint32_t MAX_ITEMS = 4;
-
         Factory<ecs::Entity> entityFactory;
         uint32_t id;
 
         Simulation();
         void RunGameLoop();
-
+        void Tick();
         void WriteBinary(Writer &, ecs::component::Camera *viewer);
         void ReadBinary(Reader &);
+        std::vector<uint32_t> FindEntitiesInView(ecs::component::Camera *viewer);
+        EntityUpdateType FindEntityUpdateType(uint32_t id, ecs::component::Camera *);
+
+        operator Factory<ecs::Entity> &() { return entityFactory; }
+        operator const Factory<ecs::Entity> &() const { return entityFactory; }
     };
 }

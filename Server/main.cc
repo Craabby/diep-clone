@@ -1,27 +1,42 @@
 #include <iostream>
 
+#include <Shared/Coder/Reader.hh>
 #include <Shared/Coder/Writer.hh>
 #include <Shared/EntityComponentSystem/Entity.hh>
 #include <Shared/Simulation.hh>
 
 using namespace shared::ecs::component;
 
-shared::Simulation simulation;
+struct GameSimulation
+{
+    shared::Simulation simulation;
+};
 
-uint32_t entityId = simulation.entityFactory.Create();
-uint32_t entityId2 = simulation.entityFactory.Create();
-shared::ecs::Entity &entity = simulation.entityFactory.Get(entityId);
-shared::ecs::Entity &entity2 = simulation.entityFactory.Get(entityId2);
+GameSimulation simulation;
+shared::Simulation clientSimulation;
+
+shared::Factory<shared::ecs::Entity> entities = simulation.simulation;
+uint32_t entityId = entities.Create();
+uint32_t entityId2 = entities.Create();
+shared::ecs::Entity &entity = entities.Get(entityId);
+shared::ecs::Entity &entity2 = entities.Get(entityId2);
 
 void Tick()
 {
+    std::cout << std::to_string(sizeof(Camera)) << std::endl;
     shared::Writer writer;
-    simulation.WriteBinary(writer, &entity.Get<Camera>());
+    simulation.simulation.WriteBinary(writer, &entity.Get<Camera>());
 
     for (uint8_t x : writer.Data())
         std::cout << std::to_string(x) << " ";
 
     std::cout << std::endl;
+    
+    shared::Reader reader = writer;
+    clientSimulation.ReadBinary(reader);
+
+    std::cout << *clientSimulation.entityFactory.Get(1).Get<Physics>().y << std::endl;
+
     entity.Reset();
     entity2.Reset();
 }
@@ -38,6 +53,19 @@ int main()
     Tick();
     Tick();
     p.x += 1;
+    p.y += 100;
+    Tick();
+    p.x += 1;
+    p.y += 100;
+    Tick();
+    p.x += 1;
+    p.y += 100;
+    Tick();
+    p.x += 1;
+    p.y += 100;
     Tick();
     Tick();
+
+    entity.~Entity();
+    entity2.~Entity();
 }

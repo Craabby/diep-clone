@@ -6,14 +6,18 @@
 
 namespace shared
 {
-    class Reader
+    struct Writer;
+
+    struct Reader
     {
-    public:
+        bool fromWriter = false;
+        uint8_t *buffer;
         size_t at = 0;
         size_t size;
-        uint8_t *buffer;
 
         Reader(uint8_t *buffer, size_t size);
+        Reader(Writer &writer);
+        ~Reader();
 
         uint8_t U8();
         uint16_t U16();

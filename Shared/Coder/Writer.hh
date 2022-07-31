@@ -7,11 +7,10 @@
 
 namespace shared
 {
-    class Writer
+    struct Writer
     {
         std::vector<uint8_t> data;
 
-    public:
         Writer &U8(uint8_t value);
         Writer &U16(uint16_t value);
         Writer &U32(uint32_t value);

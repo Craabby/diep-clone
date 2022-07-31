@@ -6,7 +6,7 @@
 namespace shared
 {
 	template <typename T>
-	class Optional
+	struct Optional
 	{
 		bool isNull = true;
 		union Option
@@ -16,7 +16,6 @@ namespace shared
 			~Option() {}
 		} option;
 
-	public:
 		Optional(const T &value)
 		{
 			Set(value);

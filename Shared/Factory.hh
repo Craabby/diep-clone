@@ -8,15 +8,14 @@
 
 namespace shared
 {
-    template <class T>
-    class Factory
+    template <typename T>
+    struct Factory
     {
 #define MAX T::MAX_ITEMS
 
-        uint32_t startingId;
         std::vector<Optional<T>> data;
+        uint32_t startingId;
 
-    public:
         Factory()
             : startingId(0)
         {
@@ -47,6 +46,13 @@ namespace shared
             assert(false);
         }
 
+        template <typename... Arguments>
+        void Create(uint32_t id, Arguments... args)
+        {
+            assert(Exists(id) == false);
+            data[id].Set(T{args...});
+            Get(id).id = id;
+        }
         void Delete(uint32_t id)
         {
             data[id]("tried to delete nonexistant entity");
