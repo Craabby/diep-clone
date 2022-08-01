@@ -57,7 +57,7 @@ namespace shared
 
     Writer &Writer::Vi(int32_t value)
     {
-        Vu((0 - (value < 0 ? 1 : 0)) ^ (value << 1));
+        Vu((0 - (value < 0)) ^ (value << 1));
 
         return *this;
     }

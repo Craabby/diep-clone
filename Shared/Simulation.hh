@@ -1,11 +1,14 @@
 #pragma once
 
 #include <Shared/Factory.hh>
-#include <Shared/EntityComponentSystem/Component/Camera.hh>
 #include <Shared/EntityComponentSystem/Entity.hh>
 
 namespace shared
 {
+    namespace ecs::component
+    {
+        class Camera;
+    }
     enum class EntityUpdateType : uint8_t
     {
         Updated,

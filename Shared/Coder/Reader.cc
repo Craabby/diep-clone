@@ -48,7 +48,7 @@ namespace shared
     uint32_t Reader::Vu()
     {
         uint32_t out = 0;
-        uint8_t i = 0;
+        uint32_t i = 0;
 
         while ((*this)[at] & 0x80)
         {
