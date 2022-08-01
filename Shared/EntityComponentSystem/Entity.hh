@@ -1,11 +1,11 @@
 #pragma once
 
-#include <cstdint>
 #include <array>
+#include <cassert>
+#include <cstdint>
 
 #include <Shared/EntityComponentSystem/Component/Physics.hh>
 #include <Shared/EntityComponentSystem/Component/Camera.hh>
-#include <Shared/Optional.hh>
 
 namespace shared::ecs
 {

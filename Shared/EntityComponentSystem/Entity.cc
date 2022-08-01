@@ -1,5 +1,7 @@
 #include <Shared/EntityComponentSystem/Entity.hh>
 
+#include <iostream>
+
 #include <Shared/Coder/Writer.hh>
 #include <Shared/Coder/Reader.hh>
 
@@ -44,14 +46,18 @@ namespace shared::ecs
 	void Entity::ReadBinary(Reader &reader, bool created)
 	{
 		uint32_t componentFlags = reader.Vu();
-		if (created && componentFlags & (1 << component::Camera::ID))
-			Append<component::Camera>();
-		if (created && componentFlags & (1 << component::Physics::ID))
-			Append<component::Physics>();
 
-		if (created == false && componentFlags & (1 << component::Camera::ID))
+		if (componentFlags & (1 << component::Camera::ID))
+		{
+			if (created)
+				Append<component::Camera>();
 			Get<component::Camera>().ReadBinary(reader);
-		if (created == false && componentFlags & (1 << component::Physics::ID))
+		}
+		if (componentFlags & (1 << component::Physics::ID))
+		{
+			if (created)
+				Append<component::Physics>();
 			Get<component::Physics>().ReadBinary(reader);
+		}
 	}
 }

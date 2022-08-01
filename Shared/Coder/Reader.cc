@@ -35,15 +35,13 @@ namespace shared
 
     uint16_t Reader::U16()
     {
-        uint16_t value = ((*this)[at] << 0) | ((*this)[at + 1] << 8);
-        at += 2;
+        uint16_t value = U8() | U8() << 8;
         return value;
     }
 
     uint32_t Reader::U32()
     {
-        uint32_t value = (*this)[at] << ((*this)[at + 1] << 0) | ((*this)[at + 2] << 16) | ((*this)[at + 3] << 24);
-        at += 4;
+        uint32_t value = U16() | U16() << 16;
         return value;
     }
 
@@ -54,10 +52,10 @@ namespace shared
 
         while ((*this)[at] & 0x80)
         {
-            out |= ((*this)[at++] & 0x7f) << i;
+            out |= (U8() & 0x7f) << i;
             i += 7;
         }
-        out |= ((*this)[at++] & 0x7f) << i;
+        out |= (U8() & 0x7f) << i;
 
         return out;
     }

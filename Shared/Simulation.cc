@@ -44,15 +44,7 @@ namespace shared
             return EntityUpdateType::Deleted;
         }
 
-        bool isCreation = std::find(viewer->view.begin(), viewer->view.end(), id) == viewer->view.end();
-
-        if (isCreation)
-        {
-            viewer->view.push_back(id);
-            return EntityUpdateType::Created;
-        }
-        else
-            return EntityUpdateType::Updated;
+        return EntityUpdateType::Updated;
     }
 
     void Simulation::WriteBinary(Writer &writer, ecs::component::Camera *viewer)
@@ -69,8 +61,6 @@ namespace shared
             if (updateType == EntityUpdateType::Deleted)
                 deletions.push_back(entityId);
             if (updateType == EntityUpdateType::Updated)
-                updates.push_back(entityId);
-            if (updateType == EntityUpdateType::Created)
                 updates.push_back(entityId);
         }
 

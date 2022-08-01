@@ -9,7 +9,6 @@ namespace shared
     enum class EntityUpdateType : uint8_t
     {
         Updated,
-        Created,
         Deleted,
         Private
     };
@@ -27,8 +26,5 @@ namespace shared
         void ReadBinary(Reader &);
         std::vector<uint32_t> FindEntitiesInView(ecs::component::Camera *viewer);
         EntityUpdateType FindEntityUpdateType(uint32_t id, ecs::component::Camera *);
-
-        operator Factory<ecs::Entity> &() { return entityFactory; }
-        operator const Factory<ecs::Entity> &() const { return entityFactory; }
     };
 }

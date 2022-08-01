@@ -1,10 +1,10 @@
 #pragma once
 
+#include <cassert>
 #include <cstdint>
 #include <iostream>
+#include <optional>
 #include <vector>
-
-#include <Shared/Optional.hh>
 
 namespace shared
 {
@@ -13,13 +13,12 @@ namespace shared
     {
 #define MAX T::MAX_ITEMS
 
-        std::vector<Optional<T>> data;
+        std::optional<T> *data = new std::optional<T>[MAX];
         uint32_t startingId;
 
         Factory()
             : startingId(0)
         {
-            data.resize(MAX);
         }
 
         ~Factory()
@@ -35,7 +34,7 @@ namespace shared
                 if (Exists(id))
                     continue;
 
-                data[id].Set(T{args...});
+                data[id] = T{args...};
                 Get(id).id = id;
 
                 startingId = (startingId + 1) % MAX;
@@ -50,23 +49,24 @@ namespace shared
         void Create(uint32_t id, Arguments... args)
         {
             assert(Exists(id) == false);
-            data[id].Set(T{args...});
+            data[id] = T{args...};
             Get(id).id = id;
         }
         void Delete(uint32_t id)
         {
-            data[id]("tried to delete nonexistant entity");
-            data[id].Delete();
+            assert(Exists(id));
+            data[id].reset();
         }
 
         bool Exists(uint32_t id)
         {
-            return data[id].Exists();
+            return (bool)data[id];
         }
 
         T &Get(uint32_t id)
         {
-            return data[id]("tried to get nonixistant entity");
+            assert(Exists(id));
+            return *data[id];
         }
 #undef MAX
     };

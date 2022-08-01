@@ -1,4 +1,5 @@
 #include <iostream>
+#include <optional>
 
 #include <Shared/Coder/Reader.hh>
 #include <Shared/Coder/Writer.hh>
@@ -15,7 +16,7 @@ struct GameSimulation
 GameSimulation simulation;
 shared::Simulation clientSimulation;
 
-shared::Factory<shared::ecs::Entity> entities = simulation.simulation;
+shared::Factory<shared::ecs::Entity> entities = simulation.simulation.entityFactory;
 uint32_t entityId = entities.Create();
 uint32_t entityId2 = entities.Create();
 shared::ecs::Entity &entity = entities.Get(entityId);
@@ -23,7 +24,6 @@ shared::ecs::Entity &entity2 = entities.Get(entityId2);
 
 void Tick()
 {
-    std::cout << std::to_string(sizeof(Camera)) << std::endl;
     shared::Writer writer;
     simulation.simulation.WriteBinary(writer, &entity.Get<Camera>());
 
