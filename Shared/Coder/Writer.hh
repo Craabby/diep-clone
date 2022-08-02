@@ -7,9 +7,13 @@
 
 namespace shared
 {
+    // TODO: implicitly cast to Reader
     struct Writer
     {
         std::vector<uint8_t> data;
+
+        Writer() = default;
+        Writer(const Writer &) = delete;
 
         Writer &U8(uint8_t value);
         Writer &U16(uint16_t value);

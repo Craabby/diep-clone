@@ -3,6 +3,7 @@
 #include <array>
 #include <cassert>
 #include <cstdint>
+#include <optional>
 
 #include <Shared/EntityComponentSystem/Component/Physics.hh>
 #include <Shared/EntityComponentSystem/Component/Camera.hh>
@@ -13,33 +14,14 @@ namespace shared::ecs
 	{
 		static constexpr uint32_t MAX_ITEMS = 131072;
 		uint32_t id;
-		std::array<void *, 2> components = {nullptr};
+		uint64_t magic = 111111111111111;
+		std::optional<component::Camera> camera;
+		std::optional<component::Physics> physics;
 
 		Entity();
-		~Entity();
+        Entity(const Entity &) = delete;
 
 		void Reset();
-
-		template <typename T>
-		T &Get()
-		{
-			assert(components[T::ID] != nullptr);
-			return *(T *)components[T::ID];
-		}
-
-		template <typename T>
-		void Append()
-		{
-			assert(components[T::ID] == nullptr);
-			components[T::ID] = new T(id);
-		}
-
-		template <typename T>
-		bool Has()
-		{
-			return components[T::ID] != nullptr;
-		}
-
 		void WriteBinary(Writer &writer);
 		void ReadBinary(Reader &reader, bool created = true);
 	};

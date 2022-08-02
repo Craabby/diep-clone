@@ -1,12 +1,15 @@
+#include <iostream>
+
 #define DECLARE_COMPONENT_FIELD(type, ClassName, name) \
 private:                                               \
     class Field##name                                  \
     {                                                  \
-        type v;                                        \
+        type v = 0;                                    \
         ClassName *owner;                              \
                                                        \
     public:                                            \
         Field##name(ClassName *owner);                 \
+        Field##name(const Field##name &) = delete;     \
         type operator=(type x);                        \
         type operator+=(type x);                       \
         type operator*();                              \

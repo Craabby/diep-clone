@@ -21,20 +21,21 @@ namespace shared
         {
         }
 
+        Factory(const Factory &) = delete;
+
         ~Factory()
         {
         }
 
         template <typename... Arguments>
-        uint32_t Create(Arguments... args)
+        uint32_t Create(Arguments...args)
         {
             for (uint32_t i = 0; i < MAX; i++)
             {
                 uint32_t id = (startingId + i) % MAX;
                 if (Exists(id))
                     continue;
-
-                data[id] = T{args...};
+                data[id].emplace(args...);
                 Get(id).id = id;
 
                 startingId = (startingId + 1) % MAX;
@@ -49,7 +50,7 @@ namespace shared
         void Create(uint32_t id, Arguments... args)
         {
             assert(Exists(id) == false);
-            data[id] = T{args...};
+            data[id].emplace(args...);
             Get(id).id = id;
         }
         void Delete(uint32_t id)
@@ -58,7 +59,7 @@ namespace shared
             data[id].reset();
         }
 
-        bool Exists(uint32_t id)
+        bool Exists(uint32_t id) const
         {
             return (bool)data[id];
         }

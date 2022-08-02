@@ -17,11 +17,13 @@ namespace shared::ecs::component
         static constexpr uint32_t ID = 1;
         bool updated;
         uint32_t ownerId;
+        uint64_t magic = 33333333333333;
         
         DECLARE_COMPONENT_FIELD(float, Physics, x)
         DECLARE_COMPONENT_FIELD(float, Physics, y)
 
         Physics(uint32_t ownerId);
+        Physics(const Physics &) = delete;
 
         void WriteBinary(Writer &);
         void ReadBinary(Reader &);

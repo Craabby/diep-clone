@@ -8,6 +8,7 @@ namespace shared
 {
     struct Writer;
 
+    // TODO: implicitly cast to Writer
     struct Reader
     {
         bool fromWriter = false;
@@ -17,6 +18,7 @@ namespace shared
 
         Reader(uint8_t *buffer, size_t size);
         Reader(Writer &writer);
+        Reader(const Reader &) = delete;
         ~Reader();
 
         uint8_t U8();

@@ -1,7 +1,5 @@
 #include <Shared/EntityComponentSystem/Entity.hh>
 
-#include <iostream>
-
 #include <Shared/Coder/Writer.hh>
 #include <Shared/Coder/Reader.hh>
 
@@ -11,20 +9,12 @@ namespace shared::ecs
 	{
 	}
 
-	Entity::~Entity()
-	{
-		if (Has<component::Camera>())
-			delete &Get<component::Camera>();
-		if (Has<component::Physics>())
-			delete &Get<component::Physics>();
-	}
-
 	void Entity::Reset()
 	{
-		if (Has<component::Camera>())
-			Get<component::Camera>().updated = false;
-		if (Has<component::Physics>())
-			Get<component::Physics>().updated = false;
+		if (camera)
+			camera->updated = false;
+		if (physics)
+			physics->updated = false;
 	}
 
 	// used for both creations and updates
@@ -32,15 +22,15 @@ namespace shared::ecs
 	{
 		uint32_t componentFlags = 0;
 
-		componentFlags |= (Has<component::Camera>() && Get<component::Camera>().updated) << component::Camera::ID;
-		componentFlags |= (Has<component::Physics>() && Get<component::Physics>().updated) << component::Physics::ID;
+		componentFlags |= ((bool)camera && camera->updated) << component::Camera::ID;
+		componentFlags |= ((bool)physics && physics->updated) << component::Physics::ID;
 
 		writer.Vu(componentFlags);
 
-		if (Has<component::Camera>() && Get<component::Camera>().updated)
-			Get<component::Camera>().WriteBinary(writer);
-		if (Has<component::Physics>() && Get<component::Physics>().updated)
-			Get<component::Physics>().WriteBinary(writer);
+		if (camera && camera->updated)
+			camera->WriteBinary(writer);
+		if (physics && physics->updated)
+			physics->WriteBinary(writer);
 	}
 
 	void Entity::ReadBinary(Reader &reader, bool created)
@@ -50,14 +40,14 @@ namespace shared::ecs
 		if (componentFlags & (1 << component::Camera::ID))
 		{
 			if (created)
-				Append<component::Camera>();
-			Get<component::Camera>().ReadBinary(reader);
+				camera.emplace(id);
+			camera->ReadBinary(reader);
 		}
 		if (componentFlags & (1 << component::Physics::ID))
 		{
 			if (created)
-				Append<component::Physics>();
-			Get<component::Physics>().ReadBinary(reader);
+				physics.emplace(id);
+			physics->ReadBinary(reader);
 		}
 	}
 }

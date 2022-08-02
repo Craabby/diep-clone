@@ -23,6 +23,8 @@ namespace shared
         uint32_t id;
 
         Simulation();
+        Simulation(const Simulation &) = delete;
+
         void RunGameLoop();
         void Tick();
         void WriteBinary(Writer &, ecs::component::Camera *viewer);

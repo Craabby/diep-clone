@@ -33,7 +33,7 @@ namespace shared
         using ecs::component::Camera;
 
         ecs::Entity &entity = entityFactory.Get(id);
-        if (entity.Has<Camera>() && entity.Get<Camera>().ownerId != viewer->ownerId)
+        if (entity.camera && entity.camera->ownerId != viewer->ownerId)
             return EntityUpdateType::Private;
 
         std::vector<uint32_t> entitiesInView = FindEntitiesInView(viewer);
