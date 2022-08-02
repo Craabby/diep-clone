@@ -14,9 +14,8 @@ namespace shared::ecs
 	{
 		static constexpr uint32_t MAX_ITEMS = 131072;
 		uint32_t id;
-		uint64_t magic = 111111111111111;
-		std::optional<component::Camera> camera;
 		std::optional<component::Physics> physics;
+		std::optional<component::Camera> camera;
 
 		Entity();
         Entity(const Entity &) = delete;

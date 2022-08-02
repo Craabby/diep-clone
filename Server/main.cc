@@ -13,8 +13,8 @@ struct GameSimulation
     shared::Simulation simulation;
 };
 
-GameSimulation simulation;
-shared::Simulation clientSimulation;
+GameSimulation simulation{};
+shared::Simulation clientSimulation{};
 
 shared::Factory<shared::ecs::Entity> &entities = simulation.simulation.entityFactory;
 uint32_t entityId = entities.Create();
@@ -31,7 +31,7 @@ void Tick()
         std::cout << std::to_string(x) << " ";
 
     std::cout << std::endl;
-    
+
     shared::Reader reader = writer;
     clientSimulation.ReadBinary(reader);
 
@@ -43,31 +43,31 @@ void Tick()
 
 int main()
 {
-    entity.camera.emplace(entityId);
-    entity2.physics.emplace(entityId2);
-    // entity.camera = Camera{entityId};
-    // entity2.physics = Physics{entityId2};
+        std::cout << sizeof(GameSimulation) << std::endl;
 
-    Physics &p = *entity2.physics;
-    p.x = 1000;
-    p.y = 2000;
+        entity.camera.emplace(entityId);
+        entity2.physics.emplace(entityId2);
 
-    Tick();
-    Tick();
-    p.x += 1;
-    p.y += 100;
-    Tick();
-    p.x += 1;
-    p.y += 100;
-    Tick();
-    p.x += 1;
-    p.y += 100;
-    Tick();
-    p.x += 1;
-    p.y += 100;
-    Tick();
-    Tick();
+        Physics &p = *entity2.physics;
+        p.x = 1000;
+        p.y = 2000;
 
-    entity.~Entity();
-    entity2.~Entity();
+        Tick();
+        Tick();
+        p.x += 1;
+        p.y += 100;
+        Tick();
+        p.x += 1;
+        p.y += 100;
+        Tick();
+        p.x += 1;
+        p.y += 100;
+        Tick();
+        p.x += 1;
+        p.y += 100;
+        Tick();
+        Tick();
+
+        entity.~Entity();
+        entity2.~Entity();
 }

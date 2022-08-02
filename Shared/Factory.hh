@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <cassert>
 #include <cstdint>
 #include <iostream>
@@ -11,39 +12,40 @@ namespace shared
     template <typename T>
     struct Factory
     {
-#define MAX T::MAX_ITEMS
+        static constexpr uint32_t MAX = T::MAX_ITEMS;
 
-        std::optional<T> *data = new std::optional<T>[MAX];
         uint32_t startingId;
+        std::optional<T> *data = new std::optional<T>[MAX];
+        // 1412 came up with this clever optimization
+        std::vector<uint32_t> freeIds;
 
         Factory()
             : startingId(0)
         {
+            freeIds.resize(MAX);
+            for (uint32_t i = 0; i < MAX; i++)
+                freeIds[i] = MAX - i - 1;
         }
 
         Factory(const Factory &) = delete;
 
         ~Factory()
         {
+            delete[] data;
         }
 
         template <typename... Arguments>
-        uint32_t Create(Arguments...args)
+        uint32_t Create(Arguments... args)
         {
-            for (uint32_t i = 0; i < MAX; i++)
-            {
-                uint32_t id = (startingId + i) % MAX;
-                if (Exists(id))
-                    continue;
-                data[id].emplace(args...);
-                Get(id).id = id;
+            // cast, otherwise it will return a refrence somehow
+            uint32_t id = (uint32_t)freeIds.back();
+            freeIds.pop_back();
+            data[id].emplace(args...);
+            Get(id).id = id;
 
-                startingId = (startingId + 1) % MAX;
+            startingId = (startingId + 1) % MAX;
 
-                return id;
-            }
-
-            assert(false);
+            return id;
         }
 
         template <typename... Arguments>
@@ -51,11 +53,13 @@ namespace shared
         {
             assert(Exists(id) == false);
             data[id].emplace(args...);
+            freeIds.erase(std::find(freeIds.begin(), freeIds.end(), id));
             Get(id).id = id;
         }
         void Delete(uint32_t id)
         {
             assert(Exists(id));
+            freeIds.push_back(id);
             data[id].reset();
         }
 
