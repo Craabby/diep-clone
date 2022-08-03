@@ -1,7 +1,6 @@
 #pragma once
 
 #include <array>
-#include <cassert>
 #include <cstdint>
 #include <optional>
 
@@ -12,7 +11,7 @@ namespace shared::ecs
 {
 	struct Entity
 	{
-		static constexpr uint32_t MAX_ITEMS = 131072;
+		static constexpr uint32_t MAX_ITEMS = 5;
 		uint32_t id;
 		std::optional<component::Physics> physics;
 		std::optional<component::Camera> camera;

@@ -3,6 +3,7 @@
 
 #include <Shared/Coder/Reader.hh>
 #include <Shared/Coder/Writer.hh>
+#include <Shared/Config.hh>
 #include <Shared/EntityComponentSystem/Entity.hh>
 #include <Shared/Simulation.hh>
 
@@ -43,31 +44,34 @@ void Tick()
 
 int main()
 {
-        std::cout << sizeof(GameSimulation) << std::endl;
+    std::cout << sizeof(GameSimulation) << std::endl;
 
-        entity.camera.emplace(entityId);
-        entity2.physics.emplace(entityId2);
+    entity.camera.emplace(entityId);
+    entity2.physics.emplace(entityId2);
 
-        Physics &p = *entity2.physics;
-        p.x = 1000;
-        p.y = 2000;
+    for (shared::ecs::Entity &entity : entities)
+        std::cout << "valid entity: " << entity.id << std::endl;
 
-        Tick();
-        Tick();
-        p.x += 1;
-        p.y += 100;
-        Tick();
-        p.x += 1;
-        p.y += 100;
-        Tick();
-        p.x += 1;
-        p.y += 100;
-        Tick();
-        p.x += 1;
-        p.y += 100;
-        Tick();
-        Tick();
+    Physics &p = *entity2.physics;
+    p.x = 1000;
+    p.y = 2000;
 
-        entity.~Entity();
-        entity2.~Entity();
+    Tick();
+    Tick();
+    p.x += 1;
+    p.y += 100;
+    Tick();
+    p.x += 1;
+    p.y += 100;
+    Tick();
+    p.x += 1;
+    p.y += 100;
+    Tick();
+    p.x += 1;
+    p.y += 100;
+    Tick();
+    Tick();
+
+    entity.~Entity();
+    entity2.~Entity();
 }
