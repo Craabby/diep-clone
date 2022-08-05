@@ -10,14 +10,10 @@ namespace shared::ecs::component
         : ownerId(ownerId),
           updated(true)
     {
-        magicTest = 0x12345678;
     }
-
-    DEFINE_COMPONENT_FIELD(uint32_t, Arena, magicTest)
 
     void Arena::WriteBinary(Writer &writer)
     {
-        writer.Vu(*magicTest);
     }
 
     void Arena::ReadBinary(Reader &reader)

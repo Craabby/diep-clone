@@ -41,11 +41,7 @@ void GameServer::Tick()
     for (Client &client : clients)
         client.Tick();
     for (shared::ecs::Entity &entity : simulation.entityFactory)
-    {
         entity.Reset();
-        if (entity.arena && (rand() & 1))
-            entity.arena->magicTest++;
-    }
 }
 
 void GameServer::Listen()

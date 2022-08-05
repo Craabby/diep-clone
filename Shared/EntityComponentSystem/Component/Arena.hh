@@ -21,8 +21,6 @@ namespace shared::ecs::component
         Arena(uint32_t ownerId);
         Arena(const Arena &) = delete;
 
-        DECLARE_COMPONENT_FIELD(uint32_t, Arena, magicTest)
-
         void WriteBinary(Writer &);
         void ReadBinary(Reader &);
     };
