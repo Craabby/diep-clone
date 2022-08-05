@@ -22,11 +22,9 @@ namespace shared
         Factory<ecs::Entity> entityFactory;
         uint32_t id;
 
-        Simulation();
+        Simulation() = default;
         Simulation(const Simulation &) = delete;
 
-        void RunGameLoop();
-        void Tick();
         void WriteBinary(Writer &, ecs::component::Camera *viewer);
         void ReadBinary(Reader &);
         std::vector<uint32_t> FindEntitiesInView(ecs::component::Camera *viewer);

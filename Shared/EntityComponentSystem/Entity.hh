@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <optional>
 
+#include <Shared/EntityComponentSystem/Component/Arena.hh>
 #include <Shared/EntityComponentSystem/Component/Physics.hh>
 #include <Shared/EntityComponentSystem/Component/Camera.hh>
 
@@ -11,8 +12,9 @@ namespace shared::ecs
 {
 	struct Entity
 	{
-		static constexpr uint32_t MAX_ITEMS = 5;
+		static constexpr uint32_t MAX_ITEMS = 1 << 17;
 		uint32_t id;
+		std::optional<component::Arena> arena;
 		std::optional<component::Physics> physics;
 		std::optional<component::Camera> camera;
 

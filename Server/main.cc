@@ -1,77 +1,28 @@
 #include <iostream>
-#include <optional>
+#include <thread>
 
-#include <Shared/Coder/Reader.hh>
-#include <Shared/Coder/Writer.hh>
-#include <Shared/Config.hh>
-#include <Shared/EntityComponentSystem/Entity.hh>
-#include <Shared/Simulation.hh>
+#include <websocketpp/config/asio_no_tls.hpp>
+#include <websocketpp/server.hpp>
 
-using namespace shared::ecs::component;
+#include <Server/GameServer.hh>
 
-struct GameSimulation
-{
-    shared::Simulation simulation;
-};
-
-GameSimulation simulation{};
-shared::Simulation clientSimulation{};
-
-shared::Factory<shared::ecs::Entity> &entities = simulation.simulation.entityFactory;
-uint32_t entityId = entities.Create();
-uint32_t entityId2 = entities.Create();
-shared::ecs::Entity &entity = entities.Get(entityId);
-shared::ecs::Entity &entity2 = entities.Get(entityId2);
-
-void Tick()
-{
-    shared::Writer writer;
-    simulation.simulation.WriteBinary(writer, &*entity.camera);
-
-    for (uint8_t x : writer.Data())
-        std::cout << std::to_string(x) << " ";
-
-    std::cout << std::endl;
-
-    shared::Reader reader = writer;
-    clientSimulation.ReadBinary(reader);
-
-    std::cout << *entity2.physics->y << " " << *clientSimulation.entityFactory.Get(1).physics->y << std::endl;
-
-    entity.Reset();
-    entity2.Reset();
-}
+using Server = websocketpp::server<websocketpp::config::asio>;
 
 int main()
 {
-    std::cout << sizeof(GameSimulation) << std::endl;
-
-    entity.camera.emplace(entityId);
-    entity2.physics.emplace(entityId2);
-
-    for (shared::ecs::Entity &entity : entities)
-        std::cout << "valid entity: " << entity.id << std::endl;
-
-    Physics &p = *entity2.physics;
-    p.x = 1000;
-    p.y = 2000;
-
-    Tick();
-    Tick();
-    p.x += 1;
-    p.y += 100;
-    Tick();
-    p.x += 1;
-    p.y += 100;
-    Tick();
-    p.x += 1;
-    p.y += 100;
-    Tick();
-    p.x += 1;
-    p.y += 100;
-    Tick();
-    Tick();
-
-    entity.~Entity();
-    entity2.~Entity();
+    Server *server = new Server;
+    std::thread([server]()
+                {
+        server->set_access_channels(websocketpp::log::alevel::none);
+        server->clear_access_channels(websocketpp::log::alevel::none);
+        server->init_asio();
+        server->listen(28623);
+        server->set_max_message_size(1024);
+        server->start_accept();
+        server->run(); })
+        .detach();
+    
+    std::thread([server]()
+                { GameServer gameServer(server); })
+        .join();
 }

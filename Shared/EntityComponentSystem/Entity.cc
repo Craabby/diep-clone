@@ -11,6 +11,8 @@ namespace shared::ecs
 
 	void Entity::Reset()
 	{
+		if (arena)
+			arena->updated = false;
 		if (camera)
 			camera->updated = false;
 		if (physics)
@@ -22,11 +24,14 @@ namespace shared::ecs
 	{
 		uint32_t componentFlags = 0;
 
+		componentFlags |= ((bool)arena && arena->updated) << component::Arena::ID;
 		componentFlags |= ((bool)camera && camera->updated) << component::Camera::ID;
 		componentFlags |= ((bool)physics && physics->updated) << component::Physics::ID;
 
 		writer.Vu(componentFlags);
 
+		if (arena && arena->updated)
+			arena->WriteBinary(writer);
 		if (camera && camera->updated)
 			camera->WriteBinary(writer);
 		if (physics && physics->updated)
@@ -37,6 +42,12 @@ namespace shared::ecs
 	{
 		uint32_t componentFlags = reader.Vu();
 
+		if (componentFlags & (1 << component::Arena::ID))
+		{
+			if (created)
+				arena.emplace(id);
+			arena->ReadBinary(reader);
+		}
 		if (componentFlags & (1 << component::Camera::ID))
 		{
 			if (created)

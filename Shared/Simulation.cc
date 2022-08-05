@@ -7,14 +7,6 @@
 
 namespace shared
 {
-    Simulation::Simulation()
-    {
-    }
-
-    void Simulation::RunGameLoop()
-    {
-    }
-
     std::vector<uint32_t> Simulation::FindEntitiesInView(ecs::component::Camera *viewer)
     {
         std::vector<uint32_t> ids;

@@ -15,7 +15,7 @@ namespace shared::ecs::component
 {
     struct Camera
     {
-        static constexpr uint32_t ID = 0;
+        static constexpr uint32_t ID = 1;
         bool updated;
         uint32_t ownerId;
         std::vector<uint32_t> view;
