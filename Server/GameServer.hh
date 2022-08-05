@@ -14,7 +14,7 @@ struct GameServer
 {
     uint32_t arena;
     Server *server;
-    std::vector<Client *> clients;
+    std::vector<Client> clients;
     shared::Simulation simulation;
 
     GameServer(Server *);

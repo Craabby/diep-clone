@@ -18,4 +18,5 @@ struct Client
     void Delete();
     void Tick();
     void Send(const shared::Writer &);
+    bool operator==(const Client &);
 };

@@ -30,3 +30,8 @@ void Client::Send(const shared::Writer &writer)
 {
     server->server->get_con_from_hdl(connectionHdl)->send((void *)writer.Data().data(), writer.Data().size(), websocketpp::frame::opcode::value::binary);
 }
+
+bool Client::operator==(const Client &other)
+{
+    return camera == other.camera;
+}

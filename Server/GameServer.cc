@@ -38,11 +38,14 @@ void GameServer::RunGameLoop()
 
 void GameServer::Tick()
 {
-    for (Client *client : clients)
-        client->Tick();
-
-    // for (shared::ecs::Entity &entity : simulation.entityFactory)
-    //     entity.Reset();
+    for (Client &client : clients)
+        client.Tick();
+    for (shared::ecs::Entity &entity : simulation.entityFactory)
+    {
+        entity.Reset();
+        if (entity.arena && (rand() & 1))
+            entity.arena->magicTest++;
+    }
 }
 
 void GameServer::Listen()
@@ -51,13 +54,12 @@ void GameServer::Listen()
     server->set_open_handler([this](websocketpp::connection_hdl connection)
                              {
         std::cout << "client connected" << std::endl;
-        Client *client = new Client(this, connection);
+        Client client = Client(this, connection);
         clients.push_back(client); 
         
-        server->get_con_from_hdl(client->connectionHdl)->set_close_handler([&](websocketpp::connection_hdl)
+        server->get_con_from_hdl(client.connectionHdl)->set_close_handler([&](websocketpp::connection_hdl)
                               {
             clients.erase(std::find(clients.begin(), clients.end(), client));
-            client->Delete();
-            delete client;
+            client.Delete();
         }); });
 }

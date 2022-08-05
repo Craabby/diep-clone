@@ -10,9 +10,11 @@ private:                                               \
     public:                                            \
         Field##name(ClassName *owner);                 \
         Field##name(const Field##name &) = delete;     \
-        type operator=(type x);                        \
-        type operator+=(type x);                       \
-        type operator*();                              \
+        type &operator=(type x);                       \
+        type &operator+=(type x);                      \
+        type &operator++();                            \
+        type &operator++(int);                         \
+        type &operator*();                             \
     };                                                 \
                                                        \
 public:                                                \
@@ -24,18 +26,28 @@ public:                                                \
     {                                                     \
     }                                                     \
                                                           \
-    type ClassName::Field##name::operator=(type x)        \
+    type &ClassName::Field##name::operator=(type x)       \
     {                                                     \
         owner->updated = true;                            \
         return v = x;                                     \
     }                                                     \
                                                           \
-    type ClassName::Field##name::operator+=(type x)       \
+    type &ClassName::Field##name::operator+=(type x)      \
     {                                                     \
         return *this = v + x;                             \
     }                                                     \
                                                           \
-    type ClassName::Field##name::operator*()              \
+    type &ClassName::Field##name::operator*()             \
     {                                                     \
         return v;                                         \
+    }                                                     \
+                                                          \
+    type &ClassName::Field##name::operator++()            \
+    {                                                     \
+        return *this = ++v;                               \
+    }                                                     \
+                                                          \
+    type &ClassName::Field##name::operator++(int)         \
+    {                                                     \
+        return *this = ++v;                               \
     }

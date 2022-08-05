@@ -17,7 +17,7 @@ namespace shared::ecs::component
         static constexpr uint32_t ID = 0;
         bool updated;
         uint32_t ownerId;
-        
+
         Arena(uint32_t ownerId);
         Arena(const Arena &) = delete;
 
