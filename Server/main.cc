@@ -1,15 +1,19 @@
 #include <iostream>
 #include <thread>
+#include <cfenv>
 
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
 
 #include <Server/GameServer.hh>
+#include <Shared/Util.hh>
 
 using Server = websocketpp::server<websocketpp::config::asio>;
 
 int main()
 {
+    feenableexcept(shared::GetFloatExceptionFlags());
+
     Server *server = new Server;
     std::thread([server]()
                 {

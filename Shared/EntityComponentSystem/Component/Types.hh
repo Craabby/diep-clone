@@ -10,11 +10,14 @@ private:                                               \
     public:                                            \
         Field##name(ClassName *owner);                 \
         Field##name(const Field##name &) = delete;     \
-        type &operator=(type x);                       \
-        type &operator+=(type x);                      \
-        type &operator++();                            \
-        type &operator++(int);                         \
-        type &operator*();                             \
+        void operator=(type x);                        \
+        void operator+=(type x);                       \
+        void operator/=(type x);                       \
+        void operator*=(type x);                       \
+        void operator++();                             \
+        void operator++(int);                          \
+        type operator*();                              \
+        operator type() { return v; }                  \
     };                                                 \
                                                        \
 public:                                                \
@@ -26,28 +29,39 @@ public:                                                \
     {                                                     \
     }                                                     \
                                                           \
-    type &ClassName::Field##name::operator=(type x)       \
+    void ClassName::Field##name::operator=(type x)        \
     {                                                     \
-        owner->updated = true;                            \
-        return v = x;                                     \
+        if (v != x)                                       \
+            owner->updated = true;                        \
+        v = x;                                            \
     }                                                     \
                                                           \
-    type &ClassName::Field##name::operator+=(type x)      \
+    void ClassName::Field##name::operator+=(type x)       \
     {                                                     \
-        return *this = v + x;                             \
+        *this = v + x;                                    \
     }                                                     \
                                                           \
-    type &ClassName::Field##name::operator*()             \
+    void ClassName::Field##name::operator/=(type x)       \
+    {                                                     \
+        *this = v / x;                                    \
+    }                                                     \
+                                                          \
+    void ClassName::Field##name::operator*=(type x)       \
+    {                                                     \
+        *this = v * x;                                    \
+    }                                                     \
+                                                          \
+    type ClassName::Field##name::operator*()              \
     {                                                     \
         return v;                                         \
     }                                                     \
                                                           \
-    type &ClassName::Field##name::operator++()            \
+    void ClassName::Field##name::operator++()             \
     {                                                     \
-        return *this = ++v;                               \
+        *this = ++v;                                      \
     }                                                     \
                                                           \
-    type &ClassName::Field##name::operator++(int)         \
+    void ClassName::Field##name::operator++(int)          \
     {                                                     \
-        return *this = ++v;                               \
+        *this = ++v;                                      \
     }

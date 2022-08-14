@@ -12,11 +12,19 @@ namespace shared::ecs::component
     {
     }
 
+    DEFINE_COMPONENT_FIELD(float, Arena, mapSize)
+
+    void Arena::Tick()
+    {
+    }
+
     void Arena::WriteBinary(Writer &writer)
     {
+        writer.Float(mapSize);
     }
 
     void Arena::ReadBinary(Reader &reader)
     {
+        mapSize = reader.Float();
     }
 }

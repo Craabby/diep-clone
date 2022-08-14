@@ -124,6 +124,7 @@ namespace shared
             usedIds.insert(id);
             freeIds.erase(std::find(freeIds.begin(), freeIds.end(), id));
             Get(id).id = id;
+
         }
         void Delete(uint32_t id)
         {
@@ -132,6 +133,7 @@ namespace shared
             data[id].reset();
             usedIds.erase(id);
             freeIds.push_back(id);
+            
         }
 
         bool Exists(uint32_t id) const

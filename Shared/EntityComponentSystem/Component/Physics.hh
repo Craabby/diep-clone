@@ -18,12 +18,16 @@ namespace shared::ecs::component
         bool updated;
         uint32_t ownerId;
         
-        DECLARE_COMPONENT_FIELD(float, Physics, x)
-        DECLARE_COMPONENT_FIELD(float, Physics, y)
+        DECLARE_COMPONENT_FIELD(float, Physics, xPosition)
+        DECLARE_COMPONENT_FIELD(float, Physics, yPosition)
+        DECLARE_COMPONENT_FIELD(float, Physics, xVelocity)
+        DECLARE_COMPONENT_FIELD(float, Physics, yVelocity)
+        DECLARE_COMPONENT_FIELD(float, Physics, size)
 
         Physics(uint32_t ownerId);
         Physics(const Physics &) = delete;
 
+		void Tick();
         void WriteBinary(Writer &);
         void ReadBinary(Reader &);
     };

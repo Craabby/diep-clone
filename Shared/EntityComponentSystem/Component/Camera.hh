@@ -22,10 +22,12 @@ namespace shared::ecs::component
         DECLARE_COMPONENT_FIELD(float, Camera, x)
         DECLARE_COMPONENT_FIELD(float, Camera, y)
         DECLARE_COMPONENT_FIELD(float, Camera, fov)
+        DECLARE_COMPONENT_FIELD(uint32_t, Camera, child)
 
         Camera(uint32_t ownerId);
         Camera(const Camera &) = delete;
 
+		void Tick();
         void WriteBinary(Writer &);
         void ReadBinary(Reader &);
     };

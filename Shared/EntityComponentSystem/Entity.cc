@@ -9,6 +9,16 @@ namespace shared::ecs
 	{
 	}
 
+	void Entity::Tick()
+	{
+		if (arena)
+			arena->Tick();
+		if (camera)
+			camera->Tick();
+		if (physics)
+			physics->Tick();
+	}
+
 	void Entity::Reset()
 	{
 		if (arena)

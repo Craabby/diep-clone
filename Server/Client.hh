@@ -13,7 +13,6 @@ struct Client
     websocketpp::connection_hdl connectionHdl;
 
     Client(GameServer *, websocketpp::connection_hdl);
-    ~Client();
 
     void Delete();
     void Tick();

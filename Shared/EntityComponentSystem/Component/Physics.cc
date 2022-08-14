@@ -12,18 +12,40 @@ namespace shared::ecs::component
     {
     }
 
-    DEFINE_COMPONENT_FIELD(float, Physics, x)
-    DEFINE_COMPONENT_FIELD(float, Physics, y)
+    void Physics::Tick()
+    {
+        xVelocity *= 0.9;
+        yVelocity *= 0.9;
+        // float rounding issues
+        if (xPosition + xVelocity == xPosition)
+            xVelocity = 0;
+        if (yPosition + xVelocity == yPosition)
+            yVelocity = 0;
+        xPosition += xVelocity;
+        yPosition += yVelocity;
+    }
+
+    DEFINE_COMPONENT_FIELD(float, Physics, xPosition)
+    DEFINE_COMPONENT_FIELD(float, Physics, yPosition)
+    DEFINE_COMPONENT_FIELD(float, Physics, xVelocity)
+    DEFINE_COMPONENT_FIELD(float, Physics, yVelocity)
+    DEFINE_COMPONENT_FIELD(float, Physics, size)
 
     void Physics::WriteBinary(Writer &writer)
     {
-        writer.Float(*x);
-        writer.Float(*y);
+        writer.Float(xPosition);
+        writer.Float(yPosition);
+        writer.Float(xVelocity);
+        writer.Float(yVelocity);
+        writer.Float(size);
     }
 
     void Physics::ReadBinary(Reader &reader)
     {
-        x = reader.Float();
-        y = reader.Float();
+        xPosition = reader.Float();
+        yPosition = reader.Float();
+        xVelocity = reader.Float();
+        yVelocity = reader.Float();
+        size = reader.Float();
     }
 }

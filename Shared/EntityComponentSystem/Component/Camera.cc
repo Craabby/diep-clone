@@ -11,15 +11,28 @@ namespace shared::ecs::component
     {
     }
 
+    void Camera::Tick()
+    {
+    }
+
     DEFINE_COMPONENT_FIELD(float, Camera, x)
     DEFINE_COMPONENT_FIELD(float, Camera, y)
     DEFINE_COMPONENT_FIELD(float, Camera, fov)
+    DEFINE_COMPONENT_FIELD(uint32_t, Camera, child)
 
     void Camera::WriteBinary(Writer &writer)
     {
+        writer.Float(x);
+        writer.Float(y);
+        writer.Float(fov);
+        writer.Vu(child);
     }
 
     void Camera::ReadBinary(Reader &reader)
     {
+        x = reader.Float();
+        y = reader.Float();
+        fov = reader.Float();
+        child = reader.Vu();
     }
 }

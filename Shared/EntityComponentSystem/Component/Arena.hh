@@ -21,6 +21,9 @@ namespace shared::ecs::component
         Arena(uint32_t ownerId);
         Arena(const Arena &) = delete;
 
+        DECLARE_COMPONENT_FIELD(float, Arena, mapSize)
+
+		void Tick();
         void WriteBinary(Writer &);
         void ReadBinary(Reader &);
     };

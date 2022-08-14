@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
 project(diep-server)
 
+find_package(Threads REQUIRED)
+
 set(SERVER_SRCS
     Client.cc
     GameServer.cc
@@ -13,11 +15,12 @@ set(SHARED_SRCS
     ../Shared/EntityComponentSystem/Component/Camera.cc
     ../Shared/EntityComponentSystem/Component/Physics.cc
     ../Shared/EntityComponentSystem/Entity.cc
-    ../Shared/Simulation.cc)
+    ../Shared/Simulation.cc
+    ../Shared/Util.cc)
 
 include_directories(../)
-
 
 set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_CXX_FLAGS "-std=c++17 -g")
 add_executable(diep-server ${SERVER_SRCS} ${SHARED_SRCS})
+target_link_libraries(diep-server PRIVATE Threads::Threads)

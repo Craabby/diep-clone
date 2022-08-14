@@ -19,8 +19,9 @@ namespace shared::ecs
 		std::optional<component::Camera> camera;
 
 		Entity();
-        Entity(const Entity &) = delete;
+		Entity(const Entity &) = delete;
 
+		void Tick();
 		void Reset();
 		void WriteBinary(Writer &writer);
 		void ReadBinary(Reader &reader, bool created = true);
