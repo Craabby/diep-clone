@@ -6,24 +6,8 @@ namespace shared
 {
     Reader::Reader(uint8_t *buffer, size_t size)
         : buffer(buffer),
-          size(size),
-          fromWriter(false)
+          size(size)
     {
-    }
-
-    Reader::Reader(Writer &writer)
-        : fromWriter(true)
-    {
-        buffer = new uint8_t[writer.Data().size()];
-        std::copy(writer.Data().data(), writer.Data().data() + writer.Data().size(), buffer);
-        this->buffer = buffer;
-        size = writer.Data().size();
-    }
-
-    Reader::~Reader()
-    {
-        if (fromWriter == true)
-            delete[] buffer;
     }
 
     uint8_t Reader::U8()

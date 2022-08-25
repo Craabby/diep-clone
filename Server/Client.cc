@@ -1,11 +1,15 @@
 #include <Server/Client.hh>
 
+#include <cmath>
+
+#include <polynet.hpp>
+
 #include <Server/GameServer.hh>
 #include <Shared/Util.hh>
 
-Client::Client(GameServer *server, websocketpp::connection_hdl connectionHdl)
+Client::Client(GameServer *server, pn::tcp::Connection socket)
     : server(server),
-      connectionHdl(connectionHdl),
+      socket(socket),
       camera(server->simulation.entityFactory.Create())
 {
     std::optional<shared::ecs::component::Camera> &camera = server->simulation.entityFactory.Get(this->camera).camera;
@@ -41,7 +45,18 @@ void Client::Tick()
 
 void Client::Send(const shared::Writer &writer)
 {
-    server->server->get_con_from_hdl(connectionHdl)->send((void *)writer.Data().data(), writer.Data().size(), websocketpp::frame::opcode::value::binary);
+    uint32_t size = writer.Data().size();
+    const uint8_t *data = writer.Data().data();
+	char *packet = new char[size + 8];
+	*(uint32_t *)packet = packetIndex;
+	*(uint32_t *)&packet[4] = size;
+	memcpy(packet + 8, data, size);
+	socket.send(packet, size + 8);
+    for (uint32_t i = 0; i < size + 8; i++)
+        std::cout << std::to_string((uint8_t)packet[i]) << " ";
+    std::cout << std::endl;
+	packetIndex++;
+	delete[] packet;
 }
 
 bool Client::operator==(const Client &other)

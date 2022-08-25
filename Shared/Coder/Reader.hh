@@ -11,15 +11,12 @@ namespace shared
     // TODO: implicitly cast to Writer
     struct Reader
     {
-        bool fromWriter = false;
         uint8_t *buffer;
         size_t at = 0;
         size_t size;
 
         Reader(uint8_t *buffer, size_t size);
-        Reader(Writer &writer);
         Reader(const Reader &) = delete;
-        ~Reader();
 
         uint8_t U8();
         uint16_t U16();

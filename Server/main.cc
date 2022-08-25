@@ -1,32 +1,41 @@
-#include <iostream>
-#include <thread>
-#include <cfenv>
-
-#include <websocketpp/config/asio_no_tls.hpp>
-#include <websocketpp/server.hpp>
-
+#include <polynet.hpp>
 #include <Server/GameServer.hh>
-#include <Shared/Util.hh>
 
-using Server = websocketpp::server<websocketpp::config::asio>;
+// uint32_t packetIndex = 1;
+
+// void Send(pn::tcp::Connection &connection, uint32_t size, const char *data)
+// {
+// 	char *packet = new char[size + 8];
+// 	*(uint32_t *)packet = packetIndex;
+// 	*(uint32_t *)&packet[4] = size;
+// 	memcpy(packet + 8, data, size);
+// 	for (uint32_t i = 0; i < size + 8; i++)
+// 		std::cout << std::to_string(packet[i]) << " ";
+// 	std::cout << std::endl;
+// 	connection.send(packet, size + 8);
+// 	packetIndex++;
+// 	delete[] packet;
+// }
+
+// int main()
+// {
+// 	pn::tcp::Server server;
+// 	server.bind("0.0.0.0", 8000);
+// 	server.listen([&](pn::tcp::Connection &connection, void *)
+// 				  { 
+// 					std::cout << "connection" << std::endl;
+// 					Send(connection, 8, "abcdefgh");
+// 					Send(connection, 12, "abcdefghijkl");
+// 					Send(connection, 4, "abcd");
+// 					return true; });
+// }
 
 int main()
 {
-    feenableexcept(shared::GetFloatExceptionFlags());
+    pn::init();
+	pn::tcp::Server tcpServer;
+	tcpServer.bind("0.0.0.0", 60006);
 
-    Server *server = new Server;
-    std::thread([server]()
-                {
-        server->set_access_channels(websocketpp::log::alevel::none);
-        server->clear_access_channels(websocketpp::log::alevel::none);
-        server->init_asio();
-        server->listen(28623);
-        server->set_max_message_size(1024);
-        server->start_accept();
-        server->run(); })
-        .detach();
-    
-    std::thread([server]()
-                { GameServer gameServer(server); })
-        .join();
+	GameServer server{tcpServer};
+	server.Listen();
 }

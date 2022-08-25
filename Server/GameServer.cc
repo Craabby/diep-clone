@@ -1,8 +1,11 @@
-#include <iostream>
-
 #include <Server/GameServer.hh>
 
-GameServer::GameServer(Server *server)
+#include <iostream>
+#include <thread>
+
+#include <polynet.hpp>
+
+GameServer::GameServer(pn::tcp::Server &server)
     : server(server)
 {
     arena = simulation.entityFactory.Create();
@@ -40,17 +43,25 @@ void GameServer::Tick()
 
 void GameServer::Listen()
 {
-    namespace placeholders = websocketpp::lib::placeholders;
-    server->set_open_handler([this](websocketpp::connection_hdl connection)
-                             {
-        std::cout << "client connected" << std::endl; 
-        
-        server->get_con_from_hdl(clients.emplace_back(this, connection).connectionHdl)->set_close_handler([&](websocketpp::connection_hdl connection)
-                              {
-            std::cout << "client destroyed" << std::endl;
-            auto clientIterator = std::find_if(clients.begin(), clients.end(), [&](Client &a)
-            { return server->get_con_from_hdl(a.connectionHdl) == server->get_con_from_hdl(connection); });
-            clientIterator->Delete();
-            clients.erase(clientIterator);
-        }); });
+    std::thread([&]()
+                { 
+                    server.listen([&](pn::tcp::Connection &socket, void *)
+                                { 
+            std::cout << "client connected" << std::endl;
+            clients.emplace_back(this, std::move(socket));
+
+            return true; }); })
+        .detach();
+    // server->set_open_handler([this](websocketpp::connection_hdl connection)
+    //                          {
+    //     std::cout << "client connected" << std::endl;
+
+    //     server->get_con_from_hdl(clients.emplace_back(this, connection).connectionHdl)->set_close_handler([&](websocketpp::connection_hdl connection)
+    //                           {
+    //         std::cout << "client destroyed" << std::endl;
+    //         auto clientIterator = std::find_if(clients.begin(), clients.end(), [&](Client &a)
+    //         { return server->get_con_from_hdl(a.connectionHdl) == server->get_con_from_hdl(connection); });
+    //         clientIterator->Delete();
+    //         clients.erase(clientIterator);
+    //     }); });
 }
