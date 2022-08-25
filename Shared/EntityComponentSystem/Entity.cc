@@ -55,19 +55,19 @@ namespace shared::ecs
 		if (componentFlags & (1 << component::Arena::ID))
 		{
 			if (created)
-				arena.emplace(id);
+				arena.Emplace(id);
 			arena->ReadBinary(reader);
 		}
 		if (componentFlags & (1 << component::Camera::ID))
 		{
 			if (created)
-				camera.emplace(id);
+				camera.Emplace(id);
 			camera->ReadBinary(reader);
 		}
 		if (componentFlags & (1 << component::Physics::ID))
 		{
 			if (created)
-				physics.emplace(id);
+				physics.Emplace(id);
 			physics->ReadBinary(reader);
 		}
 	}

@@ -2,7 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <string>
+#include <std/string.hh>
 
 namespace shared
 {
@@ -23,7 +23,7 @@ namespace shared
         uint32_t U32();
         uint32_t Vu();
         int32_t Vi();
-        std::string String();
+        std2::String String();
         float Float();
         uint8_t operator[](size_t i);
     };

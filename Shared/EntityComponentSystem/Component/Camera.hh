@@ -1,7 +1,7 @@
 #pragma once
 
-#include <cstdint>
-#include <vector>
+#include <std/cstdint.hh>
+#include <std/vector.hh>
 
 #include <Shared/EntityComponentSystem/Component/Types.hh>
 
@@ -18,7 +18,7 @@ namespace shared::ecs::component
         static constexpr uint32_t ID = 1;
         bool updated;
         uint32_t ownerId;
-        std::vector<uint32_t> view;
+        std2::Vector<uint32_t> view;
         DECLARE_COMPONENT_FIELD(float, Camera, x)
         DECLARE_COMPONENT_FIELD(float, Camera, y)
         DECLARE_COMPONENT_FIELD(float, Camera, fov)

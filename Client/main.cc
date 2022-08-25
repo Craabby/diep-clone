@@ -1,3 +1,6 @@
+#define STD2_OPTIONAL_SAFE
+#define STD2_VECTOR_SAFE
+
 #include <polynet.hpp>
 
 int main()

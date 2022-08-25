@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <thread>
+#include <std/move.hh>
 
 #include <polynet.hpp>
 
@@ -10,7 +11,7 @@ GameServer::GameServer(pn::tcp::Server &server)
 {
     arena = simulation.entityFactory.Create();
     shared::ecs::Entity &arenaEntity = simulation.entityFactory.Get(arena);
-    arenaEntity.arena.emplace(arena);
+    arenaEntity.arena.Emplace(arena);
     arenaEntity.arena->mapSize = 8500;
 
     Listen();
@@ -48,7 +49,7 @@ void GameServer::Listen()
                     server.listen([&](pn::tcp::Connection &socket, void *)
                                 { 
             std::cout << "client connected" << std::endl;
-            clients.emplace_back(this, std::move(socket));
+            clients.Emplace(this, std2::Move(socket));
 
             return true; }); })
         .detach();

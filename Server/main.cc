@@ -1,3 +1,10 @@
+#define STD2_OPTIONAL_SAFE
+#define STD2_VECTOR_SAFE
+
+#include <cstdlib>
+
+#include <std/cstdint.hh>
+
 #include <polynet.hpp>
 #include <Server/GameServer.hh>
 

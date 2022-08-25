@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <std/vector.hh>
 
 #include <polynet.hpp>
 
@@ -11,7 +11,7 @@ struct GameServer
 {
     uint32_t arena;
     pn::tcp::Server &server;
-    std::vector<Client> clients;
+    std2::Vector<Client> clients;
     shared::Simulation simulation;
 
     GameServer(pn::tcp::Server &);

@@ -1,11 +1,12 @@
 #pragma once
 
 #include <algorithm>
+#include <std/algorithm.hh>
 #include <cassert>
 #include <cstdint>
 #include <iostream>
-#include <optional>
-#include <vector>
+#include <std/optional.hh>
+#include <std/vector.hh>
 #include <set>
 
 #include <Shared/Config.hh>
@@ -73,16 +74,16 @@ namespace shared
 
         uint32_t entitiesInUse = 0;
         // too large for the stack
-        std::optional<T> *data = new std::optional<T>[MAX];
+        std2::Optional<T> *data = new std2::Optional<T>[MAX];
         // thank you for 1412 for suggesting this genius optimization
-        std::vector<uint32_t> freeIds;
+        std2::Vector<uint32_t> freeIds;
         std::set<uint32_t> usedIds;
 
         Factory()
         {
-            freeIds.resize(MAX);
+            freeIds.Resize(MAX);
             for (uint32_t i = 0; i < MAX; i++)
-                freeIds.at(i) = MAX - i - 1;
+                freeIds[i] = MAX - i - 1;
         };
         Factory(const Factory &) = delete;
         ~Factory()
@@ -105,11 +106,11 @@ namespace shared
         template <typename... Arguments>
         uint32_t Create(Arguments... args)
         {
-            uint32_t id = (uint32_t)freeIds.back();
+            uint32_t id = freeIds[freeIds.Size() - 1];
             usedIds.insert(id);
-            freeIds.pop_back();
+            freeIds.Erase(freeIds.Size() - 1);
             entitiesInUse++;
-            data[id].emplace(args...);
+            data[id].Emplace(args...);
             Get(id).id = id;
 
             return id;
@@ -120,9 +121,9 @@ namespace shared
         {
             __ASSERT(Exists(id) == false);
             entitiesInUse++;
-            data[id].emplace(args...);
+            data[id].Emplace(std2::Forward<Arguments>(args)...);
             usedIds.insert(id);
-            freeIds.erase(std::find(freeIds.begin(), freeIds.end(), id));
+            freeIds.Erase<true>(std2::Find(freeIds.begin(), freeIds.end(), id).Index());
             Get(id).id = id;
 
         }
@@ -130,10 +131,9 @@ namespace shared
         {
             __ASSERT(Exists(id));
             entitiesInUse--;
-            data[id].reset();
+            data[id].Delete();
             usedIds.erase(id);
-            freeIds.push_back(id);
-            
+            freeIds.Emplace(id);
         }
 
         bool Exists(uint32_t id) const

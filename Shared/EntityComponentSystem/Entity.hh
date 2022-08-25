@@ -2,7 +2,7 @@
 
 #include <array>
 #include <cstdint>
-#include <optional>
+#include <std/optional.hh>
 
 #include <Shared/EntityComponentSystem/Component/Arena.hh>
 #include <Shared/EntityComponentSystem/Component/Physics.hh>
@@ -14,9 +14,9 @@ namespace shared::ecs
 	{
 		static constexpr uint32_t MAX_ITEMS = 1 << 17;
 		uint32_t id;
-		std::optional<component::Arena> arena;
-		std::optional<component::Physics> physics;
-		std::optional<component::Camera> camera;
+		std2::Optional<component::Arena> arena;
+		std2::Optional<component::Physics> physics;
+		std2::Optional<component::Camera> camera;
 
 		Entity();
 		Entity(const Entity &) = delete;

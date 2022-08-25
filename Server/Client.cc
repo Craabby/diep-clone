@@ -1,6 +1,7 @@
 #include <Server/Client.hh>
 
 #include <cmath>
+#include <std/optional.hh>
 
 #include <polynet.hpp>
 
@@ -12,11 +13,11 @@ Client::Client(GameServer *server, pn::tcp::Connection socket)
       socket(socket),
       camera(server->simulation.entityFactory.Create())
 {
-    std::optional<shared::ecs::component::Camera> &camera = server->simulation.entityFactory.Get(this->camera).camera;
-    camera.emplace(this->camera);
+    std2::Optional<shared::ecs::component::Camera> &camera = server->simulation.entityFactory.Get(this->camera).camera;
+    camera.Emplace(this->camera);
     camera->child = server->simulation.entityFactory.Create();
     uint32_t child = camera->child;
-    server->simulation.entityFactory.Get(child).physics.emplace(child);
+    server->simulation.entityFactory.Get(child).physics.Emplace(child);
     shared::ecs::component::Physics &childPhysics = *server->simulation.entityFactory.Get(child).physics;
     float mapSize = server->simulation.entityFactory.Get(server->arena).arena->mapSize;
     childPhysics.xPosition = shared::RandomFloat() * mapSize;
@@ -45,8 +46,8 @@ void Client::Tick()
 
 void Client::Send(const shared::Writer &writer)
 {
-    uint32_t size = writer.Data().size();
-    const uint8_t *data = writer.Data().data();
+    uint32_t size = writer.Data().Size();
+    const uint8_t *data = writer.Data().Data();
 	char *packet = new char[size + 8];
 	*(uint32_t *)packet = packetIndex;
 	*(uint32_t *)&packet[4] = size;

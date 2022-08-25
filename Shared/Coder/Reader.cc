@@ -1,5 +1,7 @@
 #include <Shared/Coder/Reader.hh>
 
+#include <std/string.hh>
+
 #include <Shared/Coder/Writer.hh>
 
 namespace shared
@@ -56,9 +58,9 @@ namespace shared
         return *(float *)&uint32Value;
     }
 
-    std::string Reader::String()
+    std2::String Reader::String()
     {
-        std::string string;
+        std2::String string;
         while ((*this)[at] != 0)
         {
             string += (*this)[at];

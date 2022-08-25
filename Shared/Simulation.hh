@@ -1,5 +1,7 @@
 #pragma once
 
+#include <std/vector.hh>
+
 #include <Shared/Factory.hh>
 #include <Shared/EntityComponentSystem/Entity.hh>
 
@@ -27,7 +29,7 @@ namespace shared
 
         void WriteBinary(Writer &, ecs::component::Camera *viewer);
         void ReadBinary(Reader &);
-        std::vector<uint32_t> FindEntitiesInView(ecs::component::Camera *viewer);
+        std2::Vector<uint32_t> FindEntitiesInView(ecs::component::Camera *viewer);
         EntityUpdateType FindEntityUpdateType(uint32_t id, ecs::component::Camera *);
     };
 }

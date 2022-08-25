@@ -1,17 +1,17 @@
 #include <Shared/Coder/Writer.hh>
 
-#include <vector>
+#include <std/vector.hh>
 
 namespace shared
 {
-    const std::vector<uint8_t> &Writer::Data() const
+    const std2::Vector<uint8_t> &Writer::Data() const
     {
         return data;
     }
 
     Writer &Writer::U8(uint8_t value)
     {
-        data.push_back(value);
+        data.Emplace(value);
 
         return *this;
     }
@@ -62,10 +62,10 @@ namespace shared
         return *this;
     }
 
-    Writer &Writer::String(const std::string &value)
+    Writer &Writer::String(const std2::String &value)
     {
-        for (size_t i = 0; i < value.size(); i++)
-            U8(value.at(i));
+        for (size_t i = 0; i < value.Size(); i++)
+            U8(value[i]);
         U8(0);
 
         return *this;
