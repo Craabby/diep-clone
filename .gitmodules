@@ -3,6 +3,6 @@
     url = https://github.com/BlueCannonBall/Polynet.git
 
 [submodule "ThirdParty/std"]
-    path = ThirdParty/std
-    url = https://github.com/Craabby/std.git
+	path = ThirdParty/std
+	url = https://github.com/Craabby/std.git
 
