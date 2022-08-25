@@ -1,6 +1,6 @@
 #pragma once
 
-#include <websocketpp/server.hpp>
+#include <polynet.hpp>
 
 #include <Shared/Coder/Writer.hh>
 
@@ -10,9 +10,10 @@ struct Client
 {
     uint32_t camera;
     GameServer *server;
-    websocketpp::connection_hdl connectionHdl;
+    pn::tcp::Connection socket;
+    uint32_t packetIndex = 1;
 
-    Client(GameServer *, websocketpp::connection_hdl);
+    Client(GameServer *, pn::tcp::Connection);
 
     void Delete();
     void Tick();

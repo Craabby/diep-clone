@@ -1,11 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
-project(diep-server)
+project(diep-client)
 
 find_package(Threads REQUIRED)
 
-set(SERVER_SRCS
-    Client.cc
-    GameServer.cc
+set(CLIENT_SRCS
     main.cc
     ../ThirdParty/Polynet/polynet.cpp)
 
@@ -23,5 +21,5 @@ include_directories(../ ../ThirdParty/Polynet)
 
 set(CMAKE_CXX_COMPILER "clang++")
 set(CMAKE_CXX_FLAGS "-std=c++17 -g")
-add_executable(diep-server ${SERVER_SRCS} ${SHARED_SRCS})
-target_link_libraries(diep-server PRIVATE Threads::Threads)
+add_executable(diep-client ${CLIENT_SRCS} ${SHARED_SRCS})
+target_link_libraries(diep-client PRIVATE Threads::Threads)

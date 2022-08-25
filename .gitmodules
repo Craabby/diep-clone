@@ -1,8 +1,8 @@
-[submodule "Server/ThirdParty/IXWebSocket"]
-    path = Server/ThirdParty/IXWebSocket
-    url = https://github.com/machinezone/IXWebSocket.git
+[submodule "ThirdParty/Polynet"]
+    path = ThirdParty/Polynet
+    url = https://github.com/BlueCannonBall/Polynet.git
 
-[submodule "Client/ThirdParty/IXWebSocket"]
-    path = Client/ThirdParty/IXWebSocket
-    url = https://github.com/machinezone/IXWebSocket.git
+[submodule "ThirdParty/std"]
+    path = ThirdParty/std
+    url = https://github.com/Craabby/std.git
 
