@@ -2,7 +2,7 @@
 #define STD2_VECTOR_SAFE
 
 #include <polynet.hpp>
-#include <std2/cassert.hh>
+#include <std/cassert.hh>
 
 int main()
 {

@@ -1,6 +1,6 @@
 #include <Shared/Coder/Reader.hh>
 
-#include <std2/string.hh>
+#include <std/string.hh>
 
 #include <Shared/Coder/Writer.hh>
 

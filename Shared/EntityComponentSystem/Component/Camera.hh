@@ -1,7 +1,7 @@
 #pragma once
 
-#include <std2/cstdint.hh>
-#include <std2/vector.hh>
+#include <std/cstdint.hh>
+#include <std/vector.hh>
 
 #include <Shared/EntityComponentSystem/Component/Types.hh>
 

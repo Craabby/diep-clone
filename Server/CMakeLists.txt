@@ -20,7 +20,7 @@ set(SHARED_SRCS
     ../Shared/Util.cc)
 
 include_directories(../ ../ThirdParty/Polynet)
-include_directories(../ ../ThirdParty/std/include)
+include_directories(../ ../ThirdParty/std2/include)
 
 set(CMAKE_CXX_COMPILER "clang++")
 set(CMAKE_CXX_FLAGS "-std=c++17 -g")
