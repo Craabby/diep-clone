@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <thread>
-#include <std/move.hh>
+#include <std2/move.hh>
 
 #include <polynet.hpp>
 
@@ -34,6 +34,15 @@ void GameServer::RunGameLoop()
 
 void GameServer::Tick()
 {
+    for (std2::size_t i = 0; i < clients.Size(); i++)
+    {
+        Client &client = clients.At(i);
+        if (!client.Connected())
+        {
+            std::cout << "client deleted\n";
+            clients.Erase<true>(i);
+        }
+    }
     for (shared::ecs::Entity &entity : simulation.entityFactory)
         entity.Tick();
     for (Client &client : clients)
@@ -45,13 +54,12 @@ void GameServer::Tick()
 void GameServer::Listen()
 {
     std::thread([&]()
-                { 
-                    server.listen([&](pn::tcp::Connection &socket, void *)
-                                { 
+                { Assert(!server.listen([&](pn::tcp::Connection &socket, void *)
+                                        { 
             std::cout << "client connected" << std::endl;
             clients.Emplace(this, std2::Move(socket));
 
-            return true; }); })
+            return true; })); })
         .detach();
     // server->set_open_handler([this](websocketpp::connection_hdl connection)
     //                          {

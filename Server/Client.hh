@@ -9,14 +9,15 @@ struct GameServer;
 struct Client
 {
     uint32_t camera;
+    uint32_t packetIndex = 1;
     GameServer *server;
     pn::tcp::Connection socket;
-    uint32_t packetIndex = 1;
 
-    Client(GameServer *, pn::tcp::Connection);
+    Client(GameServer *, pn::tcp::Connection &&);
+    ~Client();
 
-    void Delete();
+    bool Connected();
     void Tick();
-    void Send(const shared::Writer &);
+    int32_t Send(const shared::Writer &);
     bool operator==(const Client &);
 };

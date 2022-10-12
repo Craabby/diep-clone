@@ -1,8 +1,8 @@
 #include <Shared/Simulation.hh>
 
 #include <algorithm>
-#include <std/algorithm.hh>
-#include <std/vector.hh>
+#include <std2/algorithm.hh>
+#include <std2/vector.hh>
 
 #include <Shared/Coder/Reader.hh>
 #include <Shared/Coder/Writer.hh>
@@ -34,7 +34,7 @@ namespace shared
         if (std2::Find(entitiesInView.begin(), entitiesInView.end(), id) == entitiesInView.end())
         {
             // delete
-            viewer->view.Erase<true>(std2::Find(viewer->view.begin(), viewer->view.end(), id).Index());
+            viewer->view.Erase<true>((size_t)(std2::Find(viewer->view.begin(), viewer->view.end(), id) - viewer->view.begin()));
             return EntityUpdateType::Deleted;
         }
 

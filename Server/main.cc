@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 
-#include <std/cstdint.hh>
+#include <std2/cstdint.hh>
 
 #include <polynet.hpp>
 #include <Server/GameServer.hh>
@@ -41,7 +41,8 @@ int main()
 {
     pn::init();
 	pn::tcp::Server tcpServer;
-	tcpServer.bind("0.0.0.0", 60006);
+	int32_t error = tcpServer.bind("0.0.0.0", 60006);
+	Assert(!error);
 
 	GameServer server{tcpServer};
 	server.Listen();

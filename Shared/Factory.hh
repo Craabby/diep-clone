@@ -1,12 +1,12 @@
 #pragma once
 
 #include <algorithm>
-#include <std/algorithm.hh>
+#include <std2/algorithm.hh>
 #include <cassert>
 #include <cstdint>
 #include <iostream>
-#include <std/optional.hh>
-#include <std/vector.hh>
+#include <std2/optional.hh>
+#include <std2/vector.hh>
 #include <set>
 
 #include <Shared/Config.hh>
@@ -123,7 +123,7 @@ namespace shared
             entitiesInUse++;
             data[id].Emplace(std2::Forward<Arguments>(args)...);
             usedIds.insert(id);
-            freeIds.Erase<true>(std2::Find(freeIds.begin(), freeIds.end(), id).Index());
+            freeIds.Erase<true>((size_t)(std2::Find(freeIds.begin(), freeIds.end(), id) - freeIds.begin()));
             Get(id).id = id;
 
         }
